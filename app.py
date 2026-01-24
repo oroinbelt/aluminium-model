@@ -75,7 +75,7 @@ for country in countries_selected:
     else:
         mix = (
             country_df[country_df["country"] == country]
-            .set_index("technology")["share"]
+            .set_index("tech")["share"]
             .to_dict()
         )
 
@@ -205,4 +205,5 @@ fig_stack.update_layout(
 )
 
 st.plotly_chart(fig_stack, use_container_width=True)
+
 
