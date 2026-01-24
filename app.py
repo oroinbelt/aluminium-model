@@ -66,18 +66,21 @@ for country in countries_selected:
     labour_cost = cdata["labour_cost_eur_per_t"]
 
     # ----- Electricity mix -----
-    if use_manual_mix:
-        total = sum(manual_mix_raw.values())
-        if total == 0:
-            st.error("Manual electricity mix cannot sum to zero.")
-            st.stop()
-        mix = {t: manual_mix_raw[t] / total for t in TECHS}
-    else:
-        mix = (
-            country_df[country_df["country"] == country]
-            .set_index("tech")["share"]
-            .to_dict()
-        )
+if use_manual_mix:
+    total = sum(manual_mix_raw.values())
+    if total == 0:
+        st.error("Manual electricity mix cannot sum to zero.")
+        st.stop()
+    mix = {t: manual_mix_raw[t] / total for t in TECHS}
+else:
+    # READ DIRECTLY FROM WIDE-FORM CSV
+    mix = {}
+    for t in TECHS:
+        if t in cdata.index:
+            mix[t] = cdata[t]
+        else:
+            mix[t] = 0.0
+
 
     electricity_price = sum(mix[t] * LCOE_KWH[t] for t in TECHS)
     grid_co2_intensity = sum(mix[t] * DEFAULT_CO2_KWH[t] for t in TECHS)
@@ -205,5 +208,6 @@ fig_stack.update_layout(
 )
 
 st.plotly_chart(fig_stack, use_container_width=True)
+
 
 
