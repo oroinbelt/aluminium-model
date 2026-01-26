@@ -170,7 +170,7 @@ tab_scenario, tab_grid, tab_costs = st.tabs(
 # -------------------------------------------------
 # TAB 1 — Overview (decision-focused)
 # -------------------------------------------------
-— Scenario builder
+# Scenario builder
 # -------------------------------------------------
 with tab_scenario:
     st.subheader("Scenario outcomes and sensitivities")
@@ -332,4 +332,5 @@ with tab_costs:
     st.markdown("---")
     st.caption("Detailed numerical outputs")
     st.dataframe(df.round(2), use_container_width=True)
+
 
