@@ -220,12 +220,12 @@ with tab1:
             st.metric("Lowest CO₂ Country", min_co2_country)
     
     st.subheader("Cost Summary Table")
-   numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns.tolist()
-   formatter = {col: "{:.2f}" for col in numeric_cols}
-   st.dataframe(
+    numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns.tolist()
+    formatter = {col: "{:.2f}" for col in numeric_cols}
+    st.dataframe(
     df.style.format(formatter).background_gradient(cmap="viridis", subset=numeric_cols),
     use_container_width=True
-)
+    )
     # Download button
     csv = df.to_csv(index=False).encode('utf-8')
     st.download_button(
@@ -270,4 +270,5 @@ with tab3:
             st.table(mix_df)
     else:
         st.info("Enable custom mixes in the sidebar to customize energy sources.")
+
 
