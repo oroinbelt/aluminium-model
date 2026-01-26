@@ -163,18 +163,22 @@ country_colors = {
 # =================================================
 # Main layout — tabs
 # =================================================
-tab_overview, tab_scenario, tab_grid, tab_costs = st.tabs(
-    ["🌍 Overview", "⚙️ Scenario Builder", "⚡ Electricity & Grid", "💰 Cost Structure"]
+tab_scenario, tab_grid, tab_costs = st.tabs(
+    ["⚙️ Scenario Builder", "⚡ Electricity & Grid", "💰 Cost Structure"]
 )
 
 # -------------------------------------------------
 # TAB 1 — Overview (decision-focused)
 # -------------------------------------------------
-with tab_overview:
-    st.subheader("Cost–emissions trade-off under current assumptions")
+ — Scenario builder
+# -------------------------------------------------
+with tab_scenario:
+    st.subheader("Scenario outcomes and sensitivities")
     st.markdown(
-        "This overview summarises the trade-off between total production cost and carbon footprint across countries."
+        "This tab combines scenario definition with key outcome indicators and sensitivity analyses."
     )
+
+    st.markdown("### Cost–emissions trade-off")
 
     fig_tradeoff = px.scatter(
         df,
@@ -193,57 +197,62 @@ with tab_overview:
 
     st.plotly_chart(fig_tradeoff, use_container_width=True)
 
-# -------------------------------------------------
-# TAB 2 — Scenario builder
-# -------------------------------------------------
-with tab_scenario:
-    st.subheader("Policy and economic assumptions")
-    st.markdown(
-        "This tab explores how exogenous policy parameters influence production costs."
-    )
-
-    st.markdown("### Current scenario parameters")
-    st.write(f"**Carbon price:** {carbon_tax:.0f} €/t CO₂")
-    st.write(f"**Producer margin:** {margin_rate*100:.0f} % of operational cost")
-
     st.markdown("---")
-    st.markdown("### Impact of carbon pricing on total production cost")
+    st.markdown("### Electricity cost sensitivity to electricity price")
 
-    price_range = np.linspace(0, 200, 100)
-    fig_policy = go.Figure()
+    price_range = np.linspace(0.03, 0.20, 200)
+    fig_el_cost = go.Figure()
 
     for _, r in df.iterrows():
-        electricity_co2 = r["CO₂ footprint (kg/t)"]
-        base_operational = (
-            r["Electricity cost (€/t)"]
-            + r["Labour cost (€/t)"]
-            + r["Material cost (€/t)"]
-        )
-        margin_component = base_operational * margin_rate
+        E = country_df[country_df["country"] == r["Country"]]["energy_kwh_per_t"].iloc[0]
+        electricity_cost_curve = E * price_range
 
-        total_cost_curve = (
-            base_operational
-            + margin_component
-            + (electricity_co2 / 1000) * price_range
-        )
-
-        fig_policy.add_trace(
+        fig_el_cost.add_trace(
             go.Scatter(
                 x=price_range,
-                y=total_cost_curve,
+                y=electricity_cost_curve,
                 mode="lines",
                 name=r["Country"],
                 line=dict(color=country_colors[r["Country"]], width=2),
             )
         )
 
-    fig_policy.update_layout(
-        xaxis_title="Carbon price (€/t CO₂)",
-        yaxis_title="Total production cost (€/t)",
+    fig_el_cost.update_layout(
+        xaxis_title="Electricity price (€/kWh)",
+        yaxis_title="Electricity cost (€/t)",
         hovermode="x unified",
     )
 
-    st.plotly_chart(fig_policy, use_container_width=True)
+    st.plotly_chart(fig_el_cost, use_container_width=True)
+
+    st.markdown("---")
+    st.markdown("### Electricity + carbon cost sensitivity to electricity price")
+
+    fig_el_carbon = go.Figure()
+
+    for _, r in df.iterrows():
+        E = country_df[country_df["country"] == r["Country"]]["energy_kwh_per_t"].iloc[0]
+        electricity_co2 = r["CO₂ footprint (kg/t)"]
+
+        combined_cost_curve = E * price_range + (electricity_co2 / 1000) * carbon_tax
+
+        fig_el_carbon.add_trace(
+            go.Scatter(
+                x=price_range,
+                y=combined_cost_curve,
+                mode="lines",
+                name=r["Country"],
+                line=dict(color=country_colors[r["Country"]], width=2),
+            )
+        )
+
+    fig_el_carbon.update_layout(
+        xaxis_title="Electricity price (€/kWh)",
+        yaxis_title="Electricity + carbon cost (€/t)",
+        hovermode="x unified",
+    )
+
+    st.plotly_chart(fig_el_carbon, use_container_width=True)
 
 # -------------------------------------------------
 # TAB 3 — Electricity & grid mix — Electricity & grid mix
@@ -323,4 +332,3 @@ with tab_costs:
     st.markdown("---")
     st.caption("Detailed numerical outputs")
     st.dataframe(df.round(2), use_container_width=True)
-
