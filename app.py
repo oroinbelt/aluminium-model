@@ -21,6 +21,33 @@ country_df = pd.read_csv("data/country_electricity_mix.csv")
 electricity_df = pd.read_csv("data/electricity_price_co2.csv")
 materials_df = pd.read_csv("data/materials_trade.csv")
 
+# Define energy sources and factors for dynamic calculations
+sources = ["coal", "gas", "other fossil", "nuclear", "bioenergy", "hydro", "solar", "wind", "other renewables"]
+
+co2_factors = {
+    "coal": 0.82,  # kg CO2/kWh (lifecycle average)
+    "gas": 0.49,
+    "other fossil": 0.74,
+    "nuclear": 0.012,
+    "bioenergy": 0.23,
+    "hydro": 0.004,
+    "solar": 0.041,
+    "wind": 0.011,
+    "other renewables": 0.038
+}
+
+price_factors = {
+    "coal": 0.074,  # EUR/kWh (approximate LCOE global average)
+    "gas": 0.046,
+    "other fossil": 0.064,
+    "nuclear": 0.129,
+    "bioenergy": 0.055,
+    "hydro": 0.046,
+    "solar": 0.040,
+    "wind": 0.031,
+    "other renewables": 0.037
+}
+
 # -------------------------------------------------
 # Sidebar
 # -------------------------------------------------
@@ -49,6 +76,31 @@ with st.sidebar:
         step=0.5
     ) / 100.0
 
+    st.header("Grid Mix Scenarios")
+    country_mixes = {}
+    for country in countries_selected:
+        cdata = country_df[country_df["country"] == country].iloc[0]
+        with st.expander(f"{country} Grid Mix"):
+            mix = {}
+            for source in sources:
+                mix[source] = st.slider(
+                    source.capitalize(),
+                    min_value=0.0,
+                    max_value=1.0,
+                    value=float(cdata[source]),
+                    step=0.01,
+                    key=f"{country}_{source}"
+                )
+            total = sum(mix.values())
+            if total > 0:
+                for source in sources:
+                    mix[source] /= total
+            else:
+                # Fallback to original if sum is zero (unlikely)
+                for source in sources:
+                    mix[source] = float(cdata[source])
+            country_mixes[country] = mix
+
 # -------------------------------------------------
 # Core calculations
 # -------------------------------------------------
@@ -63,8 +115,10 @@ for country in countries_selected:
     E = cdata["energy_kwh_per_t"]
     labour_cost = cdata["labour_cost_eur_per_t"]
 
-    electricity_price = edata["avg_electricity_price_eur_per_kwh"]
-    grid_co2_intensity = edata["avg_co2_kg_per_kwh"]
+    # Use adjusted mix for electricity price and CO2 intensity
+    mix = country_mixes[country]
+    electricity_price = sum(mix[source] * price_factors[source] for source in sources)
+    grid_co2_intensity = sum(mix[source] * co2_factors[source] for source in sources)
 
     # --- Electricity ---
     electricity_cost = E * electricity_price
@@ -191,4 +245,3 @@ fig_stack.update_layout(
 )
 
 st.plotly_chart(fig_stack, use_container_width=True)
-
