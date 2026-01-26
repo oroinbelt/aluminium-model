@@ -95,10 +95,6 @@ with st.sidebar:
         "The model represents average production conditions. "
         "Electricity prices and carbon intensities respond endogenously "
         "to the assumed electricity mix."
-    )**  
-        The model represents average production conditions. Electricity prices
-        and carbon intensities respond endogenously to the assumed grid mix.
-        """
     )
 
 # =================================================
@@ -327,3 +323,4 @@ with tab_costs:
     st.markdown("---")
     st.caption("Detailed numerical outputs")
     st.dataframe(df.round(2), use_container_width=True)
+
