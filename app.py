@@ -169,12 +169,25 @@ tab_overview, tab_scenario, tab_grid, tab_costs = st.tabs(
 # -------------------------------------------------
 with tab_overview:
     st.subheader("Comparative outcomes under current assumptions")
+    st.markdown(
+        "This section compares total production cost and carbon footprint across countries under the selected scenario."
+    )
 
-    cols = st.columns(len(countries_selected))
-    for col, (_, r) in zip(cols, df.iterrows()):
-        with col:
-            st.metric("Total cost (€/t)", f"{r['Total cost (€/t)']:.0f}")
-            st.metric("CO₂ footprint (kg/t)", f"{r['CO₂ footprint (kg/t)']:.0f}")
+    # Organised country summary cards
+    max_cols = 3
+    rows = [countries_selected[i:i+max_cols] for i in range(0, len(countries_selected), max_cols)]
+
+    for row in rows:
+        cols = st.columns(len(row))
+        for col, country in zip(cols, row):
+            r = df[df["Country"] == country].iloc[0]
+            with col:
+                st.markdown(f"### {country}")
+                st.metric("Total cost (€/t)", f"{r['Total cost (€/t)']:.0f}")
+                st.metric("CO₂ footprint (kg/t)", f"{r['CO₂ footprint (kg/t)']:.0f}")
+
+    st.markdown("---")
+    st.markdown("### Cost–emissions trade-off")
 
     fig_tradeoff = px.scatter(
         df,
