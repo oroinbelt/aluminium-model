@@ -32,26 +32,26 @@ sources = [
 ]
 
 co2_factors = {
-    "coal": 0.82,
-    "gas": 0.49,
-    "other fossil": 0.74,
-    "nuclear": 0.012,
+    "coal": 0.9,
+    "gas": 0.45,
+    "other fossil": 0.7,
+    "nuclear": 0.01,
     "bioenergy": 0.23,
     "hydro": 0.004,
-    "solar": 0.041,
-    "wind": 0.011,
+    "solar": 0.035,
+    "wind": 0.015,
     "other renewables": 0.038,
 }
 
 price_factors = {
-    "coal": 0.074,
-    "gas": 0.046,
+    "coal": 0.09,
+    "gas": 0.1,
     "other fossil": 0.064,
-    "nuclear": 0.129,
+    "nuclear": 0.12,
     "bioenergy": 0.055,
     "hydro": 0.046,
-    "solar": 0.040,
-    "wind": 0.031,
+    "solar": 0.05,
+    "wind": 0.1,
     "other renewables": 0.037,
 }
 
@@ -332,5 +332,6 @@ with tab_costs:
     st.markdown("---")
     st.caption("Detailed numerical outputs")
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
