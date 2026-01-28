@@ -127,8 +127,8 @@ with tab_scenario:
     # -------------------------------------------------
     fig1 = px.scatter(
         df,
-        x="Electricity price (€/kWh)",
-        y="Electricity CO₂ intensity (kg/kWh)",
+        x="Electricity CO₂ intensity (kg/kWh)",
+        y="Electricity price (€/kWh)",
         color="Country",
         text="Country",
         color_discrete_map=country_colors,
@@ -136,8 +136,8 @@ with tab_scenario:
     )
     fig1.update_traces(textposition="top center")
     fig1.update_layout(
-        xaxis_title="Electricity price (€/kWh)",
-        yaxis_title="Electricity CO₂ intensity (kg CO₂ / kWh)",
+        xaxis_title="Electricity CO₂ intensity (kg CO₂ / kWh)",
+        yaxis_title="Electricity price (€/kWh)",    
     )
     st.plotly_chart(fig1, use_container_width=True)
 
@@ -230,5 +230,6 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
