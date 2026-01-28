@@ -36,14 +36,14 @@ with st.sidebar:
         min_value=0.0,
         max_value=300.0,
         value=60.0,
-        step=5.0,
+        step=1.0,
     )
 
     margin_rate = st.number_input(
         "Producer margin (% of operational cost)",
         min_value=0.0,
         max_value=50.0,
-        value=15.0,
+        value=10.0,
         step=1.0,
     ) / 100.0
 
@@ -139,7 +139,7 @@ with tab_map:
 
     fig_map.update_geos(
         showcountries=True,
-        countrycolor="lightgray",
+        countrycolor="navy",
         showcoastlines=False,
         showframe=False,
         projection_type="natural earth",
@@ -220,3 +220,4 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
