@@ -36,14 +36,14 @@ with st.sidebar:
         min_value=0.0,
         max_value=300.0,
         value=60.0,
-        step=1.0,
+        step=5.0,
     )
 
     margin_rate = st.number_input(
         "Producer margin (% of operational cost)",
         min_value=0.0,
         max_value=50.0,
-        value=10.0,
+        value=15.0,
         step=1.0,
     ) / 100.0
 
@@ -145,13 +145,12 @@ with tab_map:
         projection_type="natural earth",
     )
 
+    fig_map.update_layout(
+        margin={"r": 0, "t": 50, "l": 0, "b": 0},
+        coloraxis_colorbar=dict(title="€/t aluminium"),
+    )
 
-  fig_map.update_layout(
-    margin={"r": 0, "t": 50, "l": 0, "b": 0},
-    coloraxis_colorbar=dict(title="€/t aluminium"),
-  )
-
-  st.plotly_chart(fig_map, use_container_width=True)
+    st.plotly_chart(fig_map, use_container_width=True)
 
 # =================================================
 # TAB — Scenario outcomes
@@ -221,6 +220,3 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
-
-
-
