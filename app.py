@@ -29,7 +29,7 @@ alumina_df = pd.read_csv("data/alumina_costs.csv")
 petcoke_df = pd.read_csv("data/calc_petcoke_costs.csv")
 
 # Sustainability / trade-based CO2 dataset (the one you just uploaded)
-sustainability_df = pd.read_csv("data/total_co2_tot_dat.csv")
+sustainability_df = pd.read_csv("data/total_co2_tot_Al.csv")
 
 # Drop empty rows (same as notebook)
 sustainability_df = sustainability_df.dropna(how="all")
@@ -395,3 +395,4 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
