@@ -1,3 +1,6 @@
+
+
+
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
@@ -23,7 +26,14 @@ st.caption(
 # =================================================
 country_df = pd.read_csv("data/country_electricity_mix.csv")
 electricity_df = pd.read_csv("data/electricity_price_co2.csv")
-materials_df = pd.read_csv("data/materials_trade.csv")
+
+# NEW material cost files
+alumina_df = pd.read_csv("data/alumina_costs.csv")
+petcoke_df = pd.read_csv("data/calc_petcoke_costs.csv")
+
+# Clean country names
+for df in [country_df, electricity_df, alumina_df, petcoke_df]:
+    df["country"] = df["country"].str.strip()
 
 # =================================================
 # Sidebar (global parameters only)
@@ -58,6 +68,15 @@ countries_selected = sorted(country_df["country"].unique())
 results = []
 
 for country in countries_selected:
+
+    # Skip countries missing required datasets
+    if (
+        country not in electricity_df["country"].values
+        or country not in alumina_df["country"].values
+        or country not in petcoke_df["country"].values
+    ):
+        continue
+
     cdata = country_df[country_df["country"] == country].iloc[0]
     edata = electricity_df[electricity_df["country"] == country].iloc[0]
 
@@ -72,10 +91,24 @@ for country in countries_selected:
     electricity_cost = E * electricity_price
     electricity_co2 = E * grid_co2_intensity
 
-    # Material cost
-    mat = materials_df[materials_df["aluminium_country"] == country]
-    material_cost = (mat["weight"] * mat["price_eur_per_t"]).sum()
-    material_co2 = 0.0
+    # =================================================
+    # NEW MATERIAL COST LOGIC
+    # =================================================
+    alumina_row = alumina_df[alumina_df["country"] == country].iloc[0]
+    petcoke_row = petcoke_df[petcoke_df["country"] == country].iloc[0]
+
+    alumina_cost = (
+        alumina_row["alumina_market_price_eur_per_t"]
+        + alumina_row["alumina_transport_cost_eur_per_t"]
+    )
+
+    petcoke_cost = (
+        petcoke_row["petcoke_market_price_eur_per_t"]
+        + petcoke_row["petcoke_transport_cost_eur_per_t"]
+    )
+
+    material_cost = alumina_cost + petcoke_cost
+    material_co2 = 0.0  # not modeled
 
     # Carbon cost
     carbon_cost = ((electricity_co2 + material_co2) / 1000) * carbon_tax
@@ -99,6 +132,7 @@ for country in countries_selected:
     })
 
 df = pd.DataFrame(results)
+
 
 # =================================================
 # Visual styling
@@ -227,6 +261,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
