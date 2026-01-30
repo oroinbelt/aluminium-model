@@ -1,6 +1,3 @@
-
-
-
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
@@ -30,6 +27,7 @@ electricity_df = pd.read_csv("data/electricity_price_co2.csv")
 # NEW material cost files
 alumina_df = pd.read_csv("data/alumina_costs.csv")
 petcoke_df = pd.read_csv("data/calc_petcoke_costs.csv")
+
 # Sustainability / trade-based CO2 dataset (the one you just uploaded)
 sustainability_df = pd.read_csv("data/total_co2_tot_dat.csv")
 
@@ -93,6 +91,7 @@ with st.sidebar:
 # Countries — AUTOMATIC (ALL)
 # =================================================
 countries_selected = sorted(country_df["country"].unique())
+
 ##################################################################################################
 def compute_total_co2_intensity_from_trade(df, country_name):
     # ---- EXACT CONSTANTS FROM YOUR CODE ----
@@ -203,11 +202,12 @@ for country in countries_selected:
     electricity_price = edata["avg_electricity_price_eur_per_kwh"]
     grid_co2_intensity = edata["avg_co2_kg_per_kwh"]
 
-    # Electricity cost and emissions
+    # Electricity cost and emissions (electricity-only breakdown)
     electricity_cost = E * electricity_price
-    electricity_co2 = E * grid_co2_intensity
-############################################################################################################
-    # Build total CO2 intensity from the sustainability dataset (trade-based)
+    electricity_co2 = E * grid_co2_intensity  # kg CO2 / t Al
+
+    ############################################################################################################
+    # Total CO2 intensity from the sustainability dataset (trade-based) -> already INCLUDES electricity
     co2_info = compute_total_co2_intensity_from_trade(sustainability_df, country)
     if (
         co2_info is None
@@ -216,11 +216,11 @@ for country in countries_selected:
         or co2_info.get("total_al", 0) == 0
     ):
         continue
-        
-# Convert tCO2/tAl to kgCO2/tAl
-    material_co2 = co2_info["Functional_unit"] * 1000.0
 
-##############################################################################################################    
+    # TOTAL footprint from sustainability model (tCO2/tAl -> kgCO2/tAl)
+    total_co2 = co2_info["Functional_unit"] * 1000.0
+    ##############################################################################################################
+
     # =================================================
     # NEW MATERIAL COST LOGIC
     # =================================================
@@ -238,10 +238,9 @@ for country in countries_selected:
     )
 
     material_cost = alumina_cost + petcoke_cost
-    #material_co2 = 0.0  # not modeled
 
-    # Carbon cost
-    carbon_cost = ((electricity_co2 + material_co2) / 1000) * carbon_tax
+    # Carbon cost (use TOTAL CO2 only; no double counting)
+    carbon_cost = (total_co2 / 1000.0) * carbon_tax
 
     # Total cost
     operational_cost = electricity_cost + labour_cost + material_cost
@@ -258,7 +257,12 @@ for country in countries_selected:
         "Carbon cost (€/t)": carbon_cost,
         "Margin (€/t)": margin_cost,
         "Total cost (€/t)": total_cost,
-        "CO₂ footprint (kg/t)": electricity_co2 + material_co2,
+
+        # Store TOTAL footprint (kg/t Al)
+        "CO₂ footprint (kg/t)": total_co2,
+
+        # Optional but useful breakdown column (electricity-only)
+        "Electricity CO₂ (kg/t)": electricity_co2,
     })
 
 df = pd.DataFrame(results)
@@ -297,6 +301,7 @@ with tab_map:
             "Total cost (€/t)": ":.1f",
             "Electricity price (€/kWh)": ":.3f",
             "CO₂ footprint (kg/t)": ":.0f",
+            "Electricity CO₂ (kg/t)": ":.0f",
         },
         title="Total aluminium production cost by country",
     )
@@ -307,14 +312,13 @@ with tab_map:
     fig_map.update_geos(
         bgcolor="#0e1117",
         showcountries=True,
-        countrycolor="#2a2f3a",   # subtle country borders
+        countrycolor="#2a2f3a",
         showcoastlines=True,
-        coastlinecolor="#3a3f4b",  # soft coastlines
+        coastlinecolor="#3a3f4b",
         coastlinewidth=0.6,
         showframe=False,
         projection_type="natural earth",
     )
-
 
     fig_map.update_layout(
         margin={"r": 0, "t": 50, "l": 0, "b": 0},
@@ -352,7 +356,7 @@ with tab_scenario:
         x="CO₂ footprint (kg/t)",
         y="Total cost (€/t)",
         color="Country",
-        title="Total production cost vs CO₂ footprint",
+        title="Total production cost vs TOTAL CO₂ footprint",
     )
     st.plotly_chart(fig3, use_container_width=True)
 
@@ -391,12 +395,3 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
-
-
-
-
-
-
-
-
-
