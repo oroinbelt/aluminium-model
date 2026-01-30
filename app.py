@@ -86,6 +86,31 @@ with st.sidebar:
         value=15.0,
         step=1.0,
     ) / 100.0
+    current_efficiency = st.slider(
+        "Current efficiency (CE)",
+        min_value=0.70,
+        max_value=1.00,
+        value=0.90,
+        step=0.01,
+    )
+
+    bauxite_footprint = st.slider(
+        "Bauxite footprint (tCO₂ / t bauxite)",
+        min_value=0.0,
+        max_value=0.20,
+        value=0.035,
+        step=0.001,
+        format="%.3f",
+    )
+
+    voltage_cell = st.slider(
+        "Cell voltage (V)",
+        min_value=3.0,
+        max_value=6.0,
+        value=4.64,
+        step=0.01,
+    )
+
 
 # =================================================
 # Countries — AUTOMATIC (ALL)
@@ -93,16 +118,23 @@ with st.sidebar:
 countries_selected = sorted(country_df["country"].unique())
 
 ##################################################################################################
-def compute_total_co2_intensity_from_trade(df, country_name):
+def compute_total_co2_intensity_from_trade(
+    df,
+    country_name,
+    current_efficiency=0.9,
+    bauxite_footprint=0.035,
+    voltage_cell=4.64,
+):
+
     # ---- EXACT CONSTANTS FROM YOUR CODE ----
     bauxite_grade = 0.5  # fraction of alumina from local bauxite
-    current_efficiency = 0.9  # CE
+    #current_efficiency = 0.9  # CE
 
     stochiometric_al = 1.889  # tAl2O3/t Al
     stochiometric_c = 0.333   # tC/ t Al
     stochiometric_co2 = 1.222 # tCO2 / tAl
 
-    bauxite_footprint = 0.035 # tCO2/t bauxite
+    #bauxite_footprint = 0.035 # tCO2/t bauxite
 
     fuel_oil_alumina = 0.093      # kg fuel oil / kg alumina
     fuel_oil_co2 = 3.52           # kg CO2 / kg fuel oil
@@ -110,7 +142,7 @@ def compute_total_co2_intensity_from_trade(df, country_name):
     natural_gas_co2 = 1.98        # kg CO2 / kg natural gas
     energy_alumina = 0.109        # kWh/ kg alumina
 
-    voltage_cell = 4.64  # V
+    #voltage_cell = 4.64  # V
     anode_footprint = 1.5 # t CO2 / t Al
 
     # ---- EXACT LOGIC FROM YOUR CODE (just organized) ----
@@ -208,7 +240,14 @@ for country in countries_selected:
 
     ############################################################################################################
     # Total CO2 intensity from the sustainability dataset (trade-based) -> already INCLUDES electricity
-    co2_info = compute_total_co2_intensity_from_trade(sustainability_df, country)
+    co2_info = compute_total_co2_intensity_from_trade(
+        sustainability_df,
+        country,
+        current_efficiency=current_efficiency,
+        bauxite_footprint=bauxite_footprint,
+        voltage_cell=voltage_cell,
+    )
+
     if (
         co2_info is None
         or co2_info.get("Functional_unit") is None
@@ -395,4 +434,5 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
