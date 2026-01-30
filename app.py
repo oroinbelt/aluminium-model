@@ -178,6 +178,7 @@ for country in countries_selected:
         "Carbon cost (€/t)": carbon_cost,
         "Margin (€/t)": margin_cost,
         "Total cost (€/t)": total_cost,
+        "Electricity price (€/kwh)": electricity_price,
         "Electricity CO₂ (kg/t)": electricity_co2,
         "Non-electricity CO₂ (kg/t)": non_electricity_co2,
         "Total CO₂ (kg/t)": total_co2_kg_per_t,
@@ -324,6 +325,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
