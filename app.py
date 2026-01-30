@@ -86,7 +86,7 @@ with st.sidebar:
         value=15.0,
         step=1.0,
     ) / 100.0
-    current_efficiency = st.slider(
+    current_efficiency = st.number_input(
         "Current efficiency (CE)",
         min_value=0.70,
         max_value=1.00,
@@ -94,7 +94,7 @@ with st.sidebar:
         step=0.01,
     )
 
-    bauxite_footprint = st.slider(
+    bauxite_footprint = st.number_input(
         "Bauxite footprint (tCO₂ / t bauxite)",
         min_value=0.0,
         max_value=0.20,
@@ -103,7 +103,7 @@ with st.sidebar:
         format="%.3f",
     )
 
-    voltage_cell = st.slider(
+    voltage_cell = st.number_input(
         "Cell voltage (V)",
         min_value=3.0,
         max_value=6.0,
@@ -434,5 +434,6 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
