@@ -22,24 +22,21 @@ st.caption(
 )
 
 # =================================================
-# DATA LOADING
+# Data loading
 # =================================================
 country_df = pd.read_csv("data/country_electricity_mix.csv")
 electricity_df = pd.read_csv("data/electricity_price_co2.csv")
+
+# NEW material cost files
 alumina_df = pd.read_csv("data/alumina_costs.csv")
 petcoke_df = pd.read_csv("data/calc_petcoke_costs.csv")
 
-# Flow + electricity CSV (used in notebook)
-flows_df = pd.read_csv("data/total_co2_tot_Al.csv")
-
 # Clean country names
-for df in [country_df, electricity_df, alumina_df, petcoke_df, flows_df]:
-    for col in df.columns:
-        if "country" in col.lower():
-            df[col] = df[col].astype(str).str.strip()
+for df in [country_df, electricity_df, alumina_df, petcoke_df]:
+    df["country"] = df["country"].str.strip()
 
 # =================================================
-# SIDEBAR
+# Sidebar (global parameters only)
 # =================================================
 with st.sidebar:
     st.header("Global parameters")
@@ -61,131 +58,80 @@ with st.sidebar:
     ) / 100.0
 
 # =================================================
-# FULL ALUMINIUM + TOTAL CO₂ MODEL
-# (Notebook logic embedded)
-# =================================================
-flows_df = flows_df.dropna(how="all").fillna(0)
-
-for col in flows_df.columns:
-    if flows_df[col].dtype == object:
-        try:
-            flows_df[col] = flows_df[col].str.replace(",", "").astype(float)
-        except:
-            pass
-
-records = []
-
-for country in flows_df["Bauxite_destination_m"].unique():
-
-    imports = flows_df[flows_df["Bauxite_destination_m"] == country]["Bauxite_tonnes_m"].sum() / 1e6
-    exports = flows_df[flows_df["Bauxite_destination_x"] == country]["Bauxite_tonnes_x"].sum() / 1e6
-    domestic = flows_df[flows_df["Bauxite_local_country"] == country]["Bauxite_local_tonnes"].sum() / 1e6
-
-    total_bauxite = imports + domestic - exports
-    if total_bauxite <= 0:
-        continue
-
-    alumina_imports = flows_df[flows_df["Alumina_destination_m"] == country]["Alumina_tonnes_m"].sum() / 1e6
-    alumina_exports = flows_df[flows_df["Alumina_destination_x"] == country]["Alumina_tonnes_x"].sum() / 1e6
-    net_alumina = alumina_imports - alumina_exports
-
-    bauxite_grade = 0.5
-    total_alumina = total_bauxite * bauxite_grade + net_alumina
-
-    stoich = 0.529
-    efficiency = 0.95
-    total_aluminium = total_alumina / stoich * efficiency  # Mt Al
-
-    # CO₂ components
-    anode_consumption = 400
-    anode_co2 = 3.67
-    bauxite_mining_co2 = 5
-    bayer_co2 = 150
-
-    scope1_anode = total_aluminium * anode_consumption * anode_co2 / 1e6
-    scope1_bauxite = total_bauxite * bauxite_mining_co2
-    scope1_bayer = total_alumina * bayer_co2
-
-    energy = flows_df[flows_df["country2"] == country]["energy_kwh_per_t"].mean()
-    grid_co2 = flows_df[flows_df["country1"] == country]["avg_co2_kg_per_kwh"].mean()
-
-    if pd.isna(energy) or pd.isna(grid_co2):
-        continue
-
-    scope2 = total_aluminium * energy * grid_co2 / 1000
-    total_co2 = scope1_anode + scope1_bauxite + scope1_bayer + scope2
-
-    records.append({
-        "Country": country,
-        "Total aluminium (t)": total_aluminium * 1e6,
-        "Total CO₂ (t)": total_co2 * 1e6,
-    })
-
-total_co2_df = pd.DataFrame(records)
-
-# =================================================
-# CORE STREAMLIT MODEL (COST + POLICY)
+# Countries — AUTOMATIC (ALL)
 # =================================================
 countries_selected = sorted(country_df["country"].unique())
+
+# =================================================
+# Core model calculations (AUTOMATED MODE ONLY)
+# =================================================
 results = []
 
 for country in countries_selected:
 
+    # Skip countries missing required datasets
     if (
         country not in electricity_df["country"].values
         or country not in alumina_df["country"].values
         or country not in petcoke_df["country"].values
-        or country not in total_co2_df["Country"].values
     ):
         continue
 
     cdata = country_df[country_df["country"] == country].iloc[0]
     edata = electricity_df[electricity_df["country"] == country].iloc[0]
-    tdata = total_co2_df[total_co2_df["Country"] == country].iloc[0]
 
+    # Country-level parameters
     E = cdata["energy_kwh_per_t"]
     labour_cost = cdata["labour_cost_eur_per_t"]
+
     electricity_price = edata["avg_electricity_price_eur_per_kwh"]
     grid_co2_intensity = edata["avg_co2_kg_per_kwh"]
 
+    # Electricity cost and emissions
     electricity_cost = E * electricity_price
     electricity_co2 = E * grid_co2_intensity
 
+    # =================================================
+    # NEW MATERIAL COST LOGIC
+    # =================================================
     alumina_row = alumina_df[alumina_df["country"] == country].iloc[0]
     petcoke_row = petcoke_df[petcoke_df["country"] == country].iloc[0]
 
-    material_cost = (
+    alumina_cost = (
         alumina_row["alumina_market_price_eur_per_t"]
         + alumina_row["alumina_transport_cost_eur_per_t"]
-        + petcoke_row["petcoke_market_price_eur_per_t"]
+    )
+
+    petcoke_cost = (
+        petcoke_row["petcoke_market_price_eur_per_t"]
         + petcoke_row["petcoke_transport_cost_eur_per_t"]
     )
 
-    total_co2_kg_per_t = (tdata["Total CO₂ (t)"] / tdata["Total aluminium (t)"]) * 1000
-    non_electricity_co2 = total_co2_kg_per_t - electricity_co2
+    material_cost = alumina_cost + petcoke_cost
+    material_co2 = 0.0  # not modeled
 
-    carbon_cost = (total_co2_kg_per_t / 1000) * carbon_tax
+    # Carbon cost
+    carbon_cost = ((electricity_co2 + material_co2) / 1000) * carbon_tax
 
+    # Total cost
     operational_cost = electricity_cost + labour_cost + material_cost
     margin_cost = operational_cost * margin_rate
     total_cost = operational_cost + margin_cost + carbon_cost
 
     results.append({
         "Country": country,
+        "Electricity price (€/kWh)": electricity_price,
+        "Electricity CO₂ intensity (kg/kWh)": grid_co2_intensity,
         "Electricity cost (€/t)": electricity_cost,
         "Labour cost (€/t)": labour_cost,
         "Material cost (€/t)": material_cost,
         "Carbon cost (€/t)": carbon_cost,
         "Margin (€/t)": margin_cost,
         "Total cost (€/t)": total_cost,
-        "Electricity price (€/kWh)": electricity_price,
-        "Electricity CO₂ (kg/t)": electricity_co2,
-        "Non-electricity CO₂ (kg/t)": non_electricity_co2,
-        "Total CO₂ (kg/t)": total_co2_kg_per_t,
+        "CO₂ footprint (kg/t)": electricity_co2 + material_co2,
     })
 
 df = pd.DataFrame(results)
-
 
 
 # =================================================
@@ -217,12 +163,10 @@ with tab_map:
         color_continuous_scale="Viridis",
         range_color=(df["Total cost (€/t)"].min(), df["Total cost (€/t)"].max()),
         hover_name="Country",
-        
         hover_data={
             "Total cost (€/t)": ":.1f",
-            "Electricity CO₂ (kg/t)": ":.3f",
-            "Non-electricity CO₂ (kg/t)": ":.0f",
-            "Total CO₂ (kg/t)": ":.0f",
+            "Electricity price (€/kWh)": ":.3f",
+            "CO₂ footprint (kg/t)": ":.0f",
         },
         title="Total aluminium production cost by country",
     )
@@ -257,18 +201,10 @@ with tab_scenario:
 
     fig1 = px.scatter(
         df,
-        x="Total CO₂ (kg/t)",
-        y="Total cost (€/t)",
-        size="Total cost (€/t)",
+        x="Electricity CO₂ intensity (kg/kWh)",
+        y="Electricity price (€/kWh)",
         color="Country",
-        hover_name="Country",
-        hover_data={
-            "Electricity CO₂ (kg/t)": ":.0f",
-            "Non-electricity CO₂ (kg/t)": ":.0f",
-            "Total CO₂ (kg/t)": ":.0f",
-
-        },
-        title="Total aluminium cost vs total CO₂ footprint",
+        title="Electricity price vs electricity CO₂ intensity",
     )
     st.plotly_chart(fig1, use_container_width=True)
 
@@ -283,7 +219,7 @@ with tab_scenario:
 
     fig3 = px.scatter(
         df,
-        x="Total CO₂ (kg/t)",
+        x="CO₂ footprint (kg/t)",
         y="Total cost (€/t)",
         color="Country",
         title="Total production cost vs CO₂ footprint",
@@ -325,12 +261,6 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
-
-
-
-
-
-
 
 
 
