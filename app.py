@@ -59,6 +59,28 @@ st.markdown(
       .block-container{
         padding-top: 2.5rem;
       }
+      /* Make the Streamlit tabs row fixed under the custom topbar */
+      div[data-testid="stTabs"]{
+        position: fixed;
+        top: 4.1rem;            /* just below your topbar */
+        left: 26rem;            /* same as topbar left */
+        right: 17rem;           /* same as topbar right */
+        z-index: 997;
+
+        background: rgba(14,17,23,0.92);
+        backdrop-filter: blur(6px);
+        border: 1px solid #2a2f3a;
+        border-radius: 14px;
+        padding: 0.25rem 0.75rem;
+      }
+
+      /* When sidebar is collapsed, align tabs with the shifted topbar */
+      section[data-testid="stSidebar"][aria-expanded="false"] ~ div div[data-testid="stTabs"]{
+        left: 20rem;
+      }
+
+
+      
     </style>
 
 
@@ -489,6 +511,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
