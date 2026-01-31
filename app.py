@@ -55,27 +55,17 @@ st.markdown(
         margin: 0;
       }
 
-      .custom-topbar .subtitle{
-        color: #9aa0a6;
-        font-size: 0.92rem;
-        margin-left: 1rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
       /* Push main content below the fixed bar */
       .block-container{
         padding-top: 5.5rem;
       }
     </style>
 
+
     <div class="custom-topbar">
       <div class="title">⚡ Aluminium Production — Decision Support Tool</div>
-      <div class="subtitle">
-        Decision-support model evaluating cost and carbon trade-offs in primary aluminium production using country-average electricity data.
-      </div>
     </div>
+
     """,
     unsafe_allow_html=True
 )
@@ -499,6 +489,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
