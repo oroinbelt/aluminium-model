@@ -26,10 +26,10 @@ st.markdown(
       /* Fixed custom top bar */
       .custom-topbar{
         position: fixed;
-        top: 0.75rem;                /* leaves room for Streamlit's Deploy/menu row */
+        top: 0.25rem;                /* leaves room for Streamlit's Deploy/menu row */
         right:20rem;
         left: 26rem;                 /* offset for expanded sidebar */
-        height: 3.5rem;
+        height: 3.2rem;
         display: flex;
         align-items: center;
         padding: 0 1.25rem;
@@ -489,6 +489,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
