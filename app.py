@@ -33,7 +33,7 @@ st.markdown(
         position: fixed;
         top: 0.25rem;
         right: 17rem;
-        left: 24rem;
+        left: 25rem;
         height: 3.2rem;
         display: flex;
         align-items: center;
@@ -530,6 +530,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
