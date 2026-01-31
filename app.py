@@ -15,7 +15,7 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-      /* 1) Keep Streamlit's header (Deploy + menu), but make it transparent */
+      /* Keep Streamlit header controls (Deploy + menu) but make header transparent */
       header[data-testid="stHeader"]{
         background: rgba(0,0,0,0);
       }
@@ -23,60 +23,63 @@ st.markdown(
         box-shadow: none;
       }
 
-      /* 2) Our custom title bar sits BELOW the Streamlit header */
-      .custom-header{
-        position: sticky;          /* stays at top when scrolling */
-        top: 0;
-        z-index: 999;
-        height: 4rem;
+      /* Fixed custom top bar */
+      .custom-topbar{
+        position: fixed;
+        top: 0.75rem;                /* leaves room for Streamlit's Deploy/menu row */
+        right: 1rem;
+        left: 22rem;                 /* offset for expanded sidebar */
+        height: 3.5rem;
         display: flex;
         align-items: center;
+        padding: 0 1.25rem;
 
-        background: #0e1117;
-        border-bottom: 1px solid #2a2f3a;
+        background: rgba(14,17,23,0.92);
+        backdrop-filter: blur(6px);
+        border: 1px solid #2a2f3a;
+        border-radius: 14px;
 
-        padding: 0 1.5rem;
-
-        /* IMPORTANT: reserve space on the left so it doesn't sit under the sidebar */
-        margin-left: 21rem;        /* sidebar width when expanded */
+        z-index: 998;
       }
 
-      .custom-header .title{
+      /* When sidebar is collapsed, bar should start at the left edge */
+      section[data-testid="stSidebar"][aria-expanded="false"] ~ div .custom-topbar{
+        left: 1rem;
+      }
+
+      .custom-topbar .title{
         color: white;
-        font-size: 1.8rem;
+        font-size: 1.35rem;
         font-weight: 800;
         line-height: 1;
         margin: 0;
       }
 
-      .custom-header .subtitle{
+      .custom-topbar .subtitle{
         color: #9aa0a6;
-        font-size: 0.95rem;
-        margin-top: 0.35rem;
+        font-size: 0.92rem;
+        margin-left: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
-      /* 3) When the sidebar is collapsed, remove the left margin */
-      section[data-testid="stSidebar"][aria-expanded="false"] ~ div .custom-header{
-        margin-left: 0rem;
-      }
-
-      /* Reduce default top padding a bit */
+      /* Push main content below the fixed bar */
       .block-container{
-        padding-top: 1rem;
+        padding-top: 5.5rem;
       }
     </style>
 
-    <div class="custom-header">
-      <div>
-        <div class="title">⚡ Aluminium Production — Decision Support Tool</div>
-        <div class="subtitle">
-          Decision-support model evaluating cost and carbon trade-offs in primary aluminium production using country-average electricity data.
-        </div>
+    <div class="custom-topbar">
+      <div class="title">⚡ Aluminium Production — Decision Support Tool</div>
+      <div class="subtitle">
+        Decision-support model evaluating cost and carbon trade-offs in primary aluminium production using country-average electricity data.
       </div>
     </div>
     """,
     unsafe_allow_html=True
 )
+
 
 
 
@@ -496,6 +499,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
