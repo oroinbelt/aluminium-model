@@ -12,29 +12,72 @@ st.set_page_config(
     layout="wide"
 )
 
-# >>> ADD THIS BLOCK <<<
 st.markdown(
     """
     <style>
-        /* Make Streamlit top header transparent */
-        header[data-testid="stHeader"] {
-            background: rgba(0, 0, 0, 0);
-        }
+      /* 1) Keep Streamlit's header (Deploy + menu), but make it transparent */
+      header[data-testid="stHeader"]{
+        background: rgba(0,0,0,0);
+      }
+      header[data-testid="stHeader"]::after{
+        box-shadow: none;
+      }
 
-        /* Remove the thin shadow line under the header */
-        header[data-testid="stHeader"]::after {
-            box-shadow: none;
-        }
+      /* 2) Our custom title bar sits BELOW the Streamlit header */
+      .custom-header{
+        position: sticky;          /* stays at top when scrolling */
+        top: 0;
+        z-index: 999;
+        height: 4rem;
+        display: flex;
+        align-items: center;
 
-        /* Slightly reduce top padding so title sits higher */
-        .block-container {
-            padding-top: 1.5rem;
-        }
+        background: #0e1117;
+        border-bottom: 1px solid #2a2f3a;
+
+        padding: 0 1.5rem;
+
+        /* IMPORTANT: reserve space on the left so it doesn't sit under the sidebar */
+        margin-left: 21rem;        /* sidebar width when expanded */
+      }
+
+      .custom-header .title{
+        color: white;
+        font-size: 1.8rem;
+        font-weight: 800;
+        line-height: 1;
+        margin: 0;
+      }
+
+      .custom-header .subtitle{
+        color: #9aa0a6;
+        font-size: 0.95rem;
+        margin-top: 0.35rem;
+      }
+
+      /* 3) When the sidebar is collapsed, remove the left margin */
+      section[data-testid="stSidebar"][aria-expanded="false"] ~ div .custom-header{
+        margin-left: 0rem;
+      }
+
+      /* Reduce default top padding a bit */
+      .block-container{
+        padding-top: 1rem;
+      }
     </style>
+
+    <div class="custom-header">
+      <div>
+        <div class="title">⚡ Aluminium Production — Decision Support Tool</div>
+        <div class="subtitle">
+          Decision-support model evaluating cost and carbon trade-offs in primary aluminium production using country-average electricity data.
+        </div>
+      </div>
+    </div>
     """,
     unsafe_allow_html=True
 )
-# >>> END ADD <<<
+
 
 
 st.title("⚡ Aluminium Production — Decision Support Tool")
@@ -460,6 +503,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
