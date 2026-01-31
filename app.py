@@ -263,7 +263,6 @@ def compute_total_co2_intensity_from_trade(
     alumina_co2 = (
         (fuel_oil_alumina * fuel_oil_co2 + natural_gas_alumina * natural_gas_co2 + energy_alumina * energy_co2)
         * total_alumina
-        + bauxite_co2
     )
 
     energy_hh_mode_1 = 2.9806 * voltage_cell / current_efficiency # MWh / t Al
@@ -516,6 +515,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
