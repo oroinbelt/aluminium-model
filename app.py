@@ -80,13 +80,6 @@ st.markdown(
 
 
 
-st.title("⚡ Aluminium Production — Decision Support Tool")
-st.caption(
-    "Decision-support model evaluating cost and carbon trade-offs "
-    "in primary aluminium production using country-average electricity data."
-)
-
-
 # =================================================
 # Data loading
 # =================================================
@@ -503,6 +496,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
