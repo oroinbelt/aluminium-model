@@ -533,13 +533,14 @@ with tab_costs:
 
     fig.update_layout(
         barmode="stack",
-        margin={"r": 0, "t": 10, "l": 0, "b": 0},
+        margin={"r": 0, "t": 20, "l": 0, "b": 0},
         yaxis_title="€/t aluminium",
         xaxis_title="Country",
     )
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
