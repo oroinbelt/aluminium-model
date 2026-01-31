@@ -48,12 +48,12 @@ st.markdown(
 
       /* When sidebar is collapsed, bar shifts left */
       section[data-testid="stSidebar"][aria-expanded="false"] ~ div .custom-topbar{
-        left: 20rem;
+        left: 19rem;
       }
 
       .custom-topbar .title{
         color: white;
-        font-size: 1.45rem;
+        font-size: 1.85rem;
         font-weight: 800;
         line-height: 1;
         margin: 0;
@@ -530,6 +530,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
