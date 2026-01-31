@@ -505,6 +505,17 @@ with tab_scenario:
     )
     st.plotly_chart(fig4, use_container_width=True)
 
+    fig5 = px.scatter(
+        df,
+        x="Electricity CO₂ (kg/t)",
+        y="CO₂ footprint (kg/t)",
+        color="Country",
+        title="Total CO₂ footprint vs electricity CO₂ footprint",
+        
+    )
+    st.plotly_chart(fig5, use_container_width=True)
+
+
 # =================================================
 # TAB — Cost structure
 # =================================================
@@ -540,6 +551,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
