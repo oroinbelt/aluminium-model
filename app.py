@@ -12,10 +12,6 @@ st.set_page_config(
     layout="wide"
 )
 
-st.set_page_config(
-    page_title="Aluminium Production Cost Model",
-    layout="wide"
-)
 
 st.markdown(
     """
@@ -184,7 +180,7 @@ with st.sidebar:
         step=1.0,
     ) / 100.0
     current_efficiency = st.number_input(
-        "Current Efficiency ",
+        "Current Efficiency",
         min_value=0.70,
         max_value=1.00,
         value=0.90,
@@ -530,6 +526,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
