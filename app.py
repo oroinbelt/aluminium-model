@@ -12,19 +12,14 @@ st.set_page_config(
     layout="wide"
 )
 
+st.set_page_config(
+    page_title="Aluminium Production Decision Support Tool",
+    layout="wide"
+)
+
 st.markdown(
     """
     <style>
-    /* Full-width mask behind the header + tabs (prevents content showing on sides) */
-     .top-mask{
-       position: fixed;
-       top: 0;
-       left: 0;
-       right: 0;
-       height: 8.2rem;         /* must cover: topbar + tabs + a bit */
-       background: #0e1117;    /* same as your app background */
-       z-index: 996;           /* behind topbar (998) and tabs (997) */
-       
       /* Keep Streamlit header controls (Deploy + menu) but make header transparent */
       header[data-testid="stHeader"]{
         background: rgba(0,0,0,0);
@@ -36,23 +31,22 @@ st.markdown(
       /* Fixed custom top bar */
       .custom-topbar{
         position: fixed;
-        top: 0.25rem;                /* leaves room for Streamlit's Deploy/menu row */
-        right:17rem;
-        left: 26rem;                 /* offset for expanded sidebar */
+        top: 0.25rem;
+        right: 17rem;
+        left: 26rem;
         height: 3.2rem;
         display: flex;
         align-items: center;
         padding: 0 1.25rem;
 
-        background: #0e1117;   /* fully opaque */
-
+        background: #0e1117;
         border: 1px solid #2a2f3a;
         border-radius: 14px;
 
         z-index: 998;
       }
 
-      /* When sidebar is collapsed, bar should start at the left edge */
+      /* When sidebar is collapsed, bar shifts left */
       section[data-testid="stSidebar"][aria-expanded="false"] ~ div .custom-topbar{
         left: 20rem;
       }
@@ -65,53 +59,55 @@ st.markdown(
         margin: 0;
       }
 
-      /* Push main content below the fixed bar */
-      .block-container{
-        padding-top: 2.5rem;
-      }
-      /* ============================
-      Sticky TAB TITLES ONLY
-      ============================ */
-
-      /* Fix only the tab header (tab titles row) */
+      /* Sticky TAB TITLES ONLY (the "Global map / Scenario outcomes / Cost structure" row) */
       div[role="tablist"]{
         position: fixed;
-        top: 4.1rem;              /* directly under your custom topbar */
-        left: 26rem;              /* same left offset as topbar */
-        right: 17rem;             /* same right offset as topbar */
+        top: 4.1rem;
+        left: 26rem;
+        right: 17rem;
         z-index: 997;
 
-        background: #0e1117;   /* fully opaque */
-
+        background: #0e1117;
         border-bottom: 1px solid #2a2f3a;
         padding: 0.25rem 0.75rem;
-     }
+      }
 
-     /* When sidebar is collapsed, shift tabs left */
-     section[data-testid="stSidebar"][aria-expanded="false"] 
-     ~ div div[role="tablist"]{
-       left: 20rem;
-     }
-     
-     }
+      section[data-testid="stSidebar"][aria-expanded="false"] ~ div div[role="tablist"]{
+        left: 20rem;
+      }
 
+      /* ---- FULL-WIDTH OPAQUE MASKS (prevents content showing at the sides/corners) ---- */
+      .custom-topbar::before{
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4.0rem;          /* covers the whole topbar region */
+        background: #0e1117;
+        z-index: -1;
+      }
 
+      div[role="tablist"]::before{
+        content: "";
+        position: fixed;
+        top: 4.0rem;             /* starts right after the topbar mask */
+        left: 0;
+        right: 0;
+        height: 3.4rem;          /* covers the whole tabs region */
+        background: #0e1117;
+        z-index: -1;
+      }
 
-
-      
+      /* Push main content below fixed topbar + fixed tabs */
+      .block-container{
+        padding-top: 8.2rem;
+      }
     </style>
 
-    <div class="top-mask"></div>
     <div class="custom-topbar">
       <div class="title">⚡ Aluminium Production — Decision Support Tool</div>
     </div>
-
-
-
-    <div class="custom-topbar">
-      <div class="title">⚡ Aluminium Production — Decision Support Tool</div>
-    </div>
-
     """,
     unsafe_allow_html=True
 )
@@ -534,6 +530,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
