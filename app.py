@@ -12,11 +12,45 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("⚡ Aluminium Production — Decision Support Tool")
-st.caption(
-    "Decision-support model evaluating cost and carbon trade-offs "
-    "in primary aluminium production using country-average electricity data."
+st.markdown(
+    """
+    <style>
+        /* Custom top bar */
+        .custom-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4rem;
+            background-color: #0e1117;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding-left: 1.5rem;
+            font-size: 1.6rem;
+            font-weight: 700;
+            z-index: 1000;
+            border-bottom: 1px solid #2a2f3a;
+        }
+
+        /* Push page content below header */
+        .block-container {
+            padding-top: 5rem;
+        }
+
+        /* Hide default Streamlit header */
+        header[data-testid="stHeader"] {
+            visibility: hidden;
+        }
+    </style>
+
+    <div class="custom-header">
+        ⚡ Aluminium Production — Decision Support Tool
+    </div>
+    """,
+    unsafe_allow_html=True
 )
+
 
 # =================================================
 # Data loading
@@ -434,6 +468,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
