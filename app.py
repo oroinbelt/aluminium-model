@@ -63,7 +63,7 @@ st.markdown(
       div[role="tablist"]{
         position: fixed;
         top: 4.1rem;
-        left: 33rem;
+        left: 33.5rem;
         right: 17rem;
         z-index: 997;
 
@@ -530,6 +530,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
