@@ -393,7 +393,7 @@ for country in countries_selected:
         "Total CO₂ footprint  (tCO₂/t Al)": total_co2,
 
         # Optional but useful breakdown column (electricity-only)
-        "Electricity CO₂ (tCO₂/t Al)": electricity_co2,
+        "Electricity CO₂  (tCO₂/t Al)": electricity_co2,
     })
 
 df = pd.DataFrame(results)
@@ -520,7 +520,7 @@ with tab_scenario:
 
     fig5 = px.scatter(
         df,
-        x="Electricity CO₂ (tCO₂/t Al)",
+        x="Electricity CO₂  (tCO₂/t Al)",
         y="Total CO₂ footprint  (tCO₂/t Al)",
         color="Country",
         title="Total CO₂ footprint vs electricity CO₂ footprint",
@@ -578,6 +578,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
