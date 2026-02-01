@@ -498,7 +498,7 @@ with tab_scenario:
 
     fig3 = px.scatter(
         df,
-        x="total CO₂ footprint  (tCO₂/t Al)",
+        x="Total CO₂ footprint  (tCO₂/t Al)",
         y="Total cost (€/t)",
         color="Country",
         title="Total production cost vs TOTAL CO₂ footprint",
@@ -578,6 +578,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
