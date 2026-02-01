@@ -339,10 +339,14 @@ for country in countries_selected:
     labour_cost = cdata["labour_cost_eur_per_t"]
 
     electricity_price = edata["avg_electricity_price_eur_per_kwh"]
+    electricity_price_2 = edata["avg_electricity_price_2_eur_per_kwh"]
+
     grid_co2_intensity = edata["avg_co2_kg_per_kwh"]
 
     # Electricity cost and emissions (electricity-only breakdown)
     electricity_cost = E * electricity_price
+    electricity_cost_2 = E * electricity_price_2
+
     electricity_co2 = (E * grid_co2_intensity)/1000 # t CO2 / t Al
 
     ############################################################################################################
@@ -397,6 +401,13 @@ for country in countries_selected:
     margin_cost = operational_cost * margin_rate
     total_cost = operational_cost + margin_cost + carbon_cost
 
+
+    # Total cost 2
+    operational_cost_2 = electricity_cost_2 + labour_cost + material_cost
+    margin_cost_2 = operational_cost_2 * margin_rate
+    total_cost_2 = operational_cost_2 + margin_cost_2 + carbon_cost
+
+
     results.append({
         "Country": country,
         "Electricity price (€/kWh)": electricity_price,
@@ -407,6 +418,11 @@ for country in countries_selected:
         "Carbon cost (€/t)": carbon_cost,
         "Margin (€/t)": margin_cost,
         "Total cost (€/t)": total_cost,
+        "Total cost (€/t, price mode 2)": total_cost_2,
+        "Electricity price 2 (€/kWh)": electricity_price_2,
+        "Electricity cost 2 (€/t)": electricity_cost_2,
+
+
 
         # Store TOTAL footprint (kg/t Al)
         "Total CO₂ footprint  (tCO₂/t Al)": total_co2,
@@ -423,6 +439,7 @@ for country in countries_selected:
     })
 
 df = pd.DataFrame(results)
+df["Δ total cost (€/t)"] = df["Total cost (€/t, price set 2)"] - df["Total cost (€/t)"]
 
 df["Total CO₂ (t)"] = df["Total CO₂ footprint  (tCO₂/t Al)"] * df["Total Al (t)"]
 
@@ -657,6 +674,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
