@@ -441,7 +441,7 @@ with tab_map:
         hover_data={
             "Total cost (€/t)": ":.1f",
             "Electricity price (€/kWh)": ":.3f",
-            "Total CO₂ footprint (tCO₂/t Al)": ":.0f",
+            "Total CO₂ footprint  (tCO₂/t Al)": ":.0f",
             "Electricity CO₂  (tCO₂/t Al)": ":.0f",
         },
         #title="Total aluminium production cost by country",
@@ -521,7 +521,7 @@ with tab_scenario:
     fig5 = px.scatter(
         df,
         x="Electricity CO₂ (tCO₂/t Al)",
-        y="Total CO₂ footprint (tCO₂/t Al)",
+        y="Total CO₂ footprint  (tCO₂/t Al)",
         color="Country",
         title="Total CO₂ footprint vs electricity CO₂ footprint",
         color_discrete_sequence=PALETTE
@@ -533,7 +533,7 @@ with tab_scenario:
     fig6 = px.scatter(
         df,
         x="Electricity CO₂ footprint (kgCO₂/kWh)",
-        y="Total CO₂ footprint (tCO₂/t Al)",
+        y="Total CO₂ footprint  (tCO₂/t Al)",
         color="Country",
         title="Total CO₂ footprint vs electricity CO₂ footprint (Grid)",
         color_discrete_sequence=PALETTE
@@ -578,6 +578,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
