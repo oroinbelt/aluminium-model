@@ -476,7 +476,7 @@ with tab_scenario:
         color="Country",
         title="Electricity price vs electricity CO₂ intensity",
     )
-    fig.update_traces(marker=dict(opacity=1.3))
+    fig1.update_traces(marker=dict(opacity=1.0))
     st.plotly_chart(fig1, use_container_width=True)
 
     fig2 = px.scatter(
@@ -486,7 +486,7 @@ with tab_scenario:
         color="Country",
         title="Total production cost vs electricity price",
     )
-    fig.update_traces(marker=dict(opacity=1.3))
+    fig2.update_traces(marker=dict(opacity=1.0))
     st.plotly_chart(fig2, use_container_width=True)
 
     fig3 = px.scatter(
@@ -496,7 +496,7 @@ with tab_scenario:
         color="Country",
         title="Total production cost vs TOTAL CO₂ footprint",
     )
-    fig.update_traces(marker=dict(opacity=1.3))
+    fig3.update_traces(marker=dict(opacity=1.0))
     st.plotly_chart(fig3, use_container_width=True)
 
     fig4 = px.scatter(
@@ -506,7 +506,7 @@ with tab_scenario:
         color="Country",
         title="Electricity cost vs electricity price",
     )
-    fig.update_traces(marker=dict(opacity=1.3))
+    fig4.update_traces(marker=dict(opacity=1.0))
     st.plotly_chart(fig4, use_container_width=True)
 
     fig5 = px.scatter(
@@ -517,7 +517,7 @@ with tab_scenario:
         title="Total CO₂ footprint vs electricity CO₂ footprint",
         
     )
-    fig.update_traces(marker=dict(opacity=1.3))
+    fig5.update_traces(marker=dict(opacity=1.0))
     st.plotly_chart(fig5, use_container_width=True)
 
 
@@ -556,6 +556,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
