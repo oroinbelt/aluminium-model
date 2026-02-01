@@ -439,7 +439,7 @@ for country in countries_selected:
     })
 
 df = pd.DataFrame(results)
-df["Δ total cost (€/t)"] = df["Total cost (€/t, price set 2)"] - df["Total cost (€/t)"]
+df["Δ total cost (€/t)"] = df["Total cost (€/t, price mode 2)"] - df["Total cost (€/t)"]
 
 df["Total CO₂ (t)"] = df["Total CO₂ footprint  (tCO₂/t Al)"] * df["Total Al (t)"]
 
@@ -674,6 +674,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
