@@ -328,7 +328,7 @@ for country in countries_selected:
 
     # Electricity cost and emissions (electricity-only breakdown)
     electricity_cost = E * electricity_price
-    electricity_co2 = E * grid_co2_intensity  # kg CO2 / t Al
+    electricity_co2 = (E * grid_co2_intensity)/1000 # t CO2 / t Al
 
     ############################################################################################################
     # Total CO2 intensity from the sustainability dataset (trade-based) -> already INCLUDES electricity
@@ -348,8 +348,8 @@ for country in countries_selected:
     ):
         continue
 
-    # TOTAL footprint from sustainability model (tCO2/tAl -> kgCO2/tAl)
-    total_co2 = co2_info["Functional_unit"] * 1000.0
+    # TOTAL footprint from sustainability model (tCO2/tAl)
+    total_co2 = co2_info["Functional_unit"] 
     ##############################################################################################################
 
     # =================================================
@@ -371,7 +371,7 @@ for country in countries_selected:
     material_cost = alumina_cost + petcoke_cost
 
     # Carbon cost (use TOTAL CO2 only; no double counting)
-    carbon_cost = (total_co2 / 1000.0) * carbon_tax
+    carbon_cost = total_co2 * carbon_tax
 
     # Total cost
     operational_cost = electricity_cost + labour_cost + material_cost
@@ -381,7 +381,7 @@ for country in countries_selected:
     results.append({
         "Country": country,
         "Electricity price (€/kWh)": electricity_price,
-        "Electricity CO₂ intensity (kg/kWh)": grid_co2_intensity,
+        "Electricity_grid CO₂ intensity (kg/kWh)": grid_co2_intensity,
         "Electricity cost (€/t)": electricity_cost,
         "Labour cost (€/t)": labour_cost,
         "Material cost (€/t)": material_cost,
@@ -390,10 +390,10 @@ for country in countries_selected:
         "Total cost (€/t)": total_cost,
 
         # Store TOTAL footprint (kg/t Al)
-        "CO₂ footprint (kg/t)": total_co2,
+        "CO₂ footprint (tCO₂/t Al)": total_co2,
 
         # Optional but useful breakdown column (electricity-only)
-        "Electricity CO₂ (kg/t)": electricity_co2,
+        "Electricity CO₂ (tCO₂/t Al)": electricity_co2,
     })
 
 df = pd.DataFrame(results)
@@ -441,8 +441,8 @@ with tab_map:
         hover_data={
             "Total cost (€/t)": ":.1f",
             "Electricity price (€/kWh)": ":.3f",
-            "CO₂ footprint (kg/t)": ":.0f",
-            "Electricity CO₂ (kg/t)": ":.0f",
+            "CO₂ footprint (tCO₂/t Al)": ":.0f",
+            "Electricity CO₂ (tCO₂/t Al)": ":.0f",
         },
         #title="Total aluminium production cost by country",
     )
@@ -476,10 +476,10 @@ with tab_scenario:
 
     fig1 = px.scatter(
         df,
-        x="Electricity CO₂ intensity (kg/kWh)",
+        x="Electricity_grid CO₂ intensity (kg/kWh)",
         y="Electricity price (€/kWh)",
         color="Country",
-        title="Electricity price vs electricity CO₂ intensity",
+        title="Electricity price vs Grid electricity CO₂ intensity",
         color_discrete_sequence=PALETTE
     )
     fig1.update_traces(marker=dict(opacity=1.0))
@@ -498,7 +498,7 @@ with tab_scenario:
 
     fig3 = px.scatter(
         df,
-        x="CO₂ footprint (kg/t)",
+        x="CO₂ footprint (tCO₂/t Al)",
         y="Total cost (€/t)",
         color="Country",
         title="Total production cost vs TOTAL CO₂ footprint",
@@ -520,8 +520,8 @@ with tab_scenario:
 
     fig5 = px.scatter(
         df,
-        x="Electricity CO₂ (kg/t)",
-        y="CO₂ footprint (kg/t)",
+        x="Electricity CO₂ (tCO₂/t Al)",
+        y="CO₂ footprint (tCO₂/t Al)",
         color="Country",
         title="Total CO₂ footprint vs electricity CO₂ footprint",
         color_discrete_sequence=PALETTE
@@ -566,6 +566,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
