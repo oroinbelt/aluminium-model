@@ -402,7 +402,12 @@ df = pd.DataFrame(results)
 # =================================================
 # Visual styling
 # =================================================
-PALETTE = pc.qualitative.Alphabet
+PALETTE = (
+    pc.qualitative.Dark24
+    + pc.qualitative.Light24
+    + pc.qualitative.Alphabet
+)
+
 country_colors = {
     c: PALETTE[i % len(PALETTE)] for i, c in enumerate(countries_selected)
 }
@@ -475,6 +480,7 @@ with tab_scenario:
         y="Electricity price (€/kWh)",
         color="Country",
         title="Electricity price vs electricity CO₂ intensity",
+        color_discrete_sequence=PALETTE
     )
     fig1.update_traces(marker=dict(opacity=1.0))
     st.plotly_chart(fig1, use_container_width=True)
@@ -485,6 +491,7 @@ with tab_scenario:
         y="Total cost (€/t)",
         color="Country",
         title="Total production cost vs electricity price",
+        color_discrete_sequence=PALETTE
     )
     fig2.update_traces(marker=dict(opacity=1.0))
     st.plotly_chart(fig2, use_container_width=True)
@@ -495,6 +502,7 @@ with tab_scenario:
         y="Total cost (€/t)",
         color="Country",
         title="Total production cost vs TOTAL CO₂ footprint",
+        color_discrete_sequence=PALETTE
     )
     fig3.update_traces(marker=dict(opacity=1.0))
     st.plotly_chart(fig3, use_container_width=True)
@@ -505,6 +513,7 @@ with tab_scenario:
         y="Electricity cost (€/t)",
         color="Country",
         title="Electricity cost vs electricity price",
+        color_discrete_sequence=PALETTE
     )
     fig4.update_traces(marker=dict(opacity=1.0))
     st.plotly_chart(fig4, use_container_width=True)
@@ -515,6 +524,7 @@ with tab_scenario:
         y="CO₂ footprint (kg/t)",
         color="Country",
         title="Total CO₂ footprint vs electricity CO₂ footprint",
+        color_discrete_sequence=PALETTE
         
     )
     fig5.update_traces(marker=dict(opacity=1.0))
@@ -556,6 +566,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
