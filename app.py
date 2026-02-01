@@ -540,7 +540,7 @@ with tab_scenario:
         
     )
     fig6.update_traces(marker=dict(opacity=1.0))
-    st.plotly_chart(fig5, use_container_width=True)
+    st.plotly_chart(fig6, use_container_width=True)
 
 
 # =================================================
@@ -578,6 +578,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
