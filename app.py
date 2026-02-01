@@ -58,7 +58,7 @@ st.markdown(
       /* Sticky TAB TITLES ONLY (the "Global map / Scenario outcomes / Cost structure" row) */
       div[role="tablist"]{
         position: fixed;
-        top: 4.1rem;
+        top: 3.5rem;
         left: 33.5rem;
         right: 17rem;
         z-index: 997;
@@ -167,7 +167,7 @@ with st.sidebar:
     carbon_tax = st.number_input(
         "Carbon Tax (€/t CO₂)",
         min_value=0.0,
-        max_value=300.0,
+        max_value=500.0,
         value=60.0,
         step=5.0,
     )
@@ -181,7 +181,7 @@ with st.sidebar:
     ) / 100.0
     current_efficiency = st.number_input(
         "Current Efficiency",
-        min_value=0.70,
+        min_value=0.20,
         max_value=1.00,
         value=0.90,
         step=0.01,
@@ -190,7 +190,7 @@ with st.sidebar:
     bauxite_footprint = st.number_input(
         "Bauxite footprint (tCO₂ / t bauxite)",
         min_value=0.0,
-        max_value=0.20,
+        max_value=0.40,
         value=0.035,
         step=0.001,
         format="%.3f",
@@ -198,8 +198,8 @@ with st.sidebar:
 
     voltage_cell = st.number_input(
         "Cell Voltage (V)",
-        min_value=3.0,
-        max_value=6.0,
+        min_value=0.0,
+        max_value=10.0,
         value=4.64,
         step=0.01,
     )
@@ -551,6 +551,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
