@@ -79,7 +79,7 @@ st.markdown(
         top: 0;
         left: 0;
         right: 0;
-        height: 4.0rem;          /* covers the whole topbar region */
+        height: 3.5rem;          /* covers the whole topbar region */
         background: #0e1117;
         z-index: -1;
       }
@@ -551,6 +551,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
