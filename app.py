@@ -291,6 +291,15 @@ def compute_total_co2_intensity_from_trade(
     functional_unit_mode_2 = total_co2_mode_2 / total_al
 
     functional_unit_avg = (functional_unit_mode_1 + functional_unit_mode_2) / 2
+    # --- component intensities (tCO2/t Al) ---
+    # Electricity is computed in two modes; keep both + average
+    elec_intensity_mode_1 = total_energy_co2_mode_1 / total_al
+    elec_intensity_mode_2 = total_energy_co2_mode_2 / total_al
+    elec_intensity_avg = (elec_intensity_mode_1 + elec_intensity_mode_2) / 2
+
+    reaction_intensity = total_reaction_co2 / total_al
+    bauxite_intensity = bauxite_co2 / total_al
+    anode_intensity = anode_co2 / total_al
 
     return {
         "Functional_unit": functional_unit_avg,  # as in code
@@ -299,6 +308,12 @@ def compute_total_co2_intensity_from_trade(
         "total_al": total_al,
         "total_alumina": total_alumina,
         "total_bauxite": total_bauxite,
+
+        # NEW: breakdown (tCO2/t Al)
+        "elec_tco2_per_tal": elec_intensity_avg,
+        "bauxite_tco2_per_tal": bauxite_intensity,
+        "anode_tco2_per_tal": anode_intensity,
+        "reaction_tco2_per_tal": reaction_intensity,
     }
 
 # =================================================
@@ -351,6 +366,10 @@ for country in countries_selected:
     # TOTAL footprint from sustainability model (tCO2/tAl)
     total_co2 = co2_info["Functional_unit"] 
     ##############################################################################################################
+    elec_co2_int = co2_info["elec_tco2_per_tal"]
+    bauxite_co2_int = co2_info["bauxite_tco2_per_tal"]
+    anode_co2_int = co2_info["anode_tco2_per_tal"]
+    reaction_co2_int = co2_info["reaction_tco2_per_tal"]
 
     # =================================================
     # NEW MATERIAL COST LOGIC
@@ -394,10 +413,18 @@ for country in countries_selected:
 
         # Optional but useful breakdown column (electricity-only)
         "Electricity CO₂  (tCO₂/t Al)": electricity_co2,
+
+        "CO₂ elec (tCO₂/t Al)": elec_co2_int,
+        "CO₂ bauxite (tCO₂/t Al)": bauxite_co2_int,
+        "CO₂ anode (tCO₂/t Al)": anode_co2_int,
+        "CO₂ reaction (tCO₂/t Al)": reaction_co2_int,
+        "Total Al (t)": co2_info["total_al"],   # total tonnes of aluminium (already in the function)
+
     })
 
 df = pd.DataFrame(results)
 
+df["Total CO₂ (t)"] = df["Total CO₂ footprint  (tCO₂/t Al)"] * df["Total Al (t)"]
 
 # =================================================
 # Visual styling
@@ -541,7 +568,59 @@ with tab_scenario:
     )
     fig6.update_traces(marker=dict(opacity=1.0))
     st.plotly_chart(fig6, use_container_width=True)
+    ###########################################################################33
 
+    fig_total_emissions = px.scatter(
+        df,
+        x="Total Al (t)",
+        y="Total CO₂ (t)",
+        color="Country",
+        title="Total CO₂ emissions vs total aluminium (by country)",
+        color_discrete_sequence=PALETTE
+    )
+    fig_total_emissions.update_traces(marker=dict(opacity=1.0))
+    st.plotly_chart(fig_total_emissions, use_container_width=True, key="total_co2_vs_total_al")
+
+
+    ######################################################################################
+    fig_intensity_vs_scale = px.scatter(
+        df,
+        x="Total Al (t)",
+        y="Total CO₂ footprint  (tCO₂/t Al)",
+        color="Country",
+        title="CO₂ intensity vs total aluminium (by country)",
+        color_discrete_sequence=PALETTE
+    )
+    fig_intensity_vs_scale.update_traces(marker=dict(opacity=1.0))
+    st.plotly_chart(fig_intensity_vs_scale, use_container_width=True, key="intensity_vs_total_al")
+
+    ############################################################################
+    st.markdown("### CO₂ footprint breakdown (per tonne of Al)")
+    
+    country_for_pie = st.selectbox(
+        "Select a country",
+        options=sorted(df["Country"].unique()),
+        key="pie_country_select"
+    )
+
+
+
+
+    row = df[df["Country"] == country_for_pie].iloc[0]
+
+    pie_fig = px.pie(
+        names=["Electricity", "Bauxite", "Anode", "Reaction"],
+        values=[
+            row["CO₂ elec (tCO₂/t Al)"],
+            row["CO₂ bauxite (tCO₂/t Al)"],
+            row["CO₂ anode (tCO₂/t Al)"],
+            row["CO₂ reaction (tCO₂/t Al)"],
+        ],
+        title=f"CO₂ sources for {country_for_pie} (tCO₂/t Al)"
+    )
+
+    pie_fig.update_traces(textposition="inside", textinfo="percent+label")
+    st.plotly_chart(pie_fig, use_container_width=True, key="co2_pie")
 
 # =================================================
 # TAB — Cost structure
@@ -578,6 +657,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
