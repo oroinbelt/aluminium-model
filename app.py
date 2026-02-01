@@ -368,7 +368,7 @@ for country in countries_selected:
         + petcoke_row["petcoke_transport_cost_eur_per_t"]
     )
 
-    material_cost = (alumina_cost*1.889) + (petcoke_cost*0.333)
+    material_cost = ((alumina_cost*1.889) + (petcoke_cost*0.333))/current_efficiency
 
     # Carbon cost (use TOTAL CO2 only; no double counting)
     carbon_cost = total_co2 * carbon_tax
@@ -578,6 +578,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
