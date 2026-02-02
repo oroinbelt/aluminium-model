@@ -510,6 +510,17 @@ with tab_scenario:
         color_discrete_sequence=PALETTE
     )
     fig1.update_traces(marker=dict(opacity=1.0))
+    fig1.update_layout(
+        height=620,
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            y=1.0,
+            xanchor="left",
+            x=1.02,
+            font=dict(size=9)
+        )
+    )
     st.plotly_chart(fig1, use_container_width=True)
 
     fig2 = px.scatter(
@@ -521,6 +532,17 @@ with tab_scenario:
         color_discrete_sequence=PALETTE
     )
     fig2.update_traces(marker=dict(opacity=1.0))
+    fig2.update_layout(
+        height=620,
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            y=1.0,
+            xanchor="left",
+            x=1.02,
+            font=dict(size=9)
+        )
+    )
     st.plotly_chart(fig2, use_container_width=True)
 
     fig3 = px.scatter(
@@ -532,6 +554,17 @@ with tab_scenario:
         color_discrete_sequence=PALETTE
     )
     fig3.update_traces(marker=dict(opacity=1.0))
+    fig3.update_layout(
+        height=620,
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            y=1.0,
+            xanchor="left",
+            x=1.02,
+            font=dict(size=9)
+        )
+    )
     st.plotly_chart(fig3, use_container_width=True)
 
     fig4 = px.scatter(
@@ -544,11 +577,11 @@ with tab_scenario:
     )
     fig4.update_traces(marker=dict(opacity=1.0))
     fig4.update_layout(
-        height=700,
+        height=620,
         legend=dict(
             orientation="v",
             yanchor="top",
-            y=0.7,
+            y=1.0,
             xanchor="left",
             x=1.02,
             font=dict(size=9)
@@ -568,6 +601,17 @@ with tab_scenario:
         
     )
     fig5.update_traces(marker=dict(opacity=1.0))
+    fig5.update_layout(
+        height=620,
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            y=1.0,
+            xanchor="left",
+            x=1.02,
+            font=dict(size=9)
+        )
+    )
     st.plotly_chart(fig5, use_container_width=True)
     
     fig6 = px.scatter(
@@ -580,6 +624,17 @@ with tab_scenario:
         
     )
     fig6.update_traces(marker=dict(opacity=1.0))
+    fig6.update_layout(
+        height=620,
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            y=1.0,
+            xanchor="left",
+            x=1.02,
+            font=dict(size=9)
+        )
+    )
     st.plotly_chart(fig6, use_container_width=True)
     ###########################################################################33
 
@@ -670,6 +725,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
