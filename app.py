@@ -447,7 +447,6 @@ for country in countries_selected:
     })
 
 df = pd.DataFrame(results)
-import pycountry
 
 def to_iso3(name):
     try:
@@ -704,6 +703,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
