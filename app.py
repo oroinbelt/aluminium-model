@@ -518,10 +518,10 @@ with tab_scenario:
         legend=dict(
             orientation="v",
             yanchor="top",
-            y=1.13,
+            y=1.0,
             xanchor="left",
             x=1.02,
-            font=dict(size=8)
+            font=dict(size=7)
         )
     )
     st.plotly_chart(fig1, use_container_width=True)
@@ -546,7 +546,7 @@ with tab_scenario:
             y=1.0,
             xanchor="left",
             x=1.02,
-            font=dict(size=9)
+            font=dict(size=7)
         )
     )
     st.plotly_chart(fig2, use_container_width=True)
@@ -571,7 +571,7 @@ with tab_scenario:
             y=1.0,
             xanchor="left",
             x=1.02,
-            font=dict(size=9)
+            font=dict(size=7)
         )
     )
     st.plotly_chart(fig3, use_container_width=True)
@@ -596,7 +596,7 @@ with tab_scenario:
             y=1.0,
             xanchor="left",
             x=1.02,
-            font=dict(size=9)
+            font=dict(size=7)
         )
     )
     st.plotly_chart(fig4, use_container_width=True)
@@ -624,7 +624,7 @@ with tab_scenario:
             y=1.0,
             xanchor="left",
             x=1.02,
-            font=dict(size=9)
+            font=dict(size=7)
         )
     )
     st.plotly_chart(fig5, use_container_width=True)
@@ -650,7 +650,7 @@ with tab_scenario:
             y=1.0,
             xanchor="left",
             x=1.02,
-            font=dict(size=9)
+            font=dict(size=7)
         )
     )
     st.plotly_chart(fig6, use_container_width=True)
@@ -743,6 +743,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
