@@ -678,7 +678,7 @@ with tab_scenario:
     pie_fig = px.pie(
         names=["Electricity", "Bauxite", "Anode", "Reaction"],
         values=[
-            row["CO₂ elec (tCO₂/t Al)"],
+            row["Electricity CO₂  (tCO₂/t Al)"],
             row["CO₂ bauxite (tCO₂/t Al)"],
             row["CO₂ anode (tCO₂/t Al)"],
             row["CO₂ reaction (tCO₂/t Al)"],
@@ -724,6 +724,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
