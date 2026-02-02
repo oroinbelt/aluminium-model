@@ -1,23 +1,24 @@
 country,petcoke_market_price_eur_per_t,petcoke_transport_cost_eur_per_t
-Australia,417,50
-Brazil,417,50
-Canada,417,50
-China,417,50
-France,417,50
-Germany,417,50
-India,417,50
-Italy,417,50
-Japan,417,50
-Mexico,417,50
-Norway,417,50
-Rep. of Korea,417,50
-Spain,417,50
-Türkiye,417,50
-United Kingdom,417,50
-USA,417,50
-Sweden,417,50
-Greece,417,50
-Bahrain,417,50
+Australia,417,48.75
+Brazil,417,16.73
+Canada,417,12.88
+China,417,20.16
+France,417,13.84
+Germany,417,13.21
+India,417,21.32
+Italy,417,15.47
+Japan,417,15.37
+Mexico,417,12.88
+Norway,417,29.03
+Rep. of Korea,417,12.19
+Spain,417,24.63
+Türkiye,417,13.78
+United Kingdom,417,30.75
+USA,417,12.88
+Sweden,417,30.92
+Greece,417,14.85
+Bahrain,417,20.00
+
 
 
 
