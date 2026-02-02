@@ -510,8 +510,7 @@ with tab_scenario:
         color_discrete_sequence=PALETTE
     )
     fig1.update_traces(
-        marker=dict(opacity=1.0),
-        marker=dict(size=8),
+        marker=dict(opacity=1.0,size=9),
         selector=dict(mode="markers")
     )
     fig1.update_layout(
@@ -522,7 +521,7 @@ with tab_scenario:
             y=1.0,
             xanchor="left",
             x=1.02,
-            font=dict(size=9)
+            font=dict(size=8)
         )
     )
     st.plotly_chart(fig1, use_container_width=True)
@@ -729,6 +728,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
