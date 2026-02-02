@@ -64,7 +64,7 @@ st.markdown(
         z-index: 997;
 
         background: #0e1117;
-        border-bottom: 1px solid #2a2f3a;
+        border-bottom: None
         padding: 0.25rem 0.75rem;
       }
 
@@ -743,6 +743,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
