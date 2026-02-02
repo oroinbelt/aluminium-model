@@ -16,6 +16,10 @@ st.set_page_config(
 st.markdown(
     """
     <style>
+      div[data-testid="stTabs"] hr {
+        display: none !important;
+      }
+
       /* Keep Streamlit header controls (Deploy + menu) but make header transparent */
       header[data-testid="stHeader"]{
         background: rgba(0,0,0,0);
@@ -743,6 +747,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
