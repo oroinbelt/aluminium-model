@@ -543,10 +543,8 @@ with tab_scenario:
         color_discrete_sequence=PALETTE
     )
     fig4.update_traces(marker=dict(opacity=1.0))
-    st.plotly_chart(fig4, use_container_width=True)
-    
     fig4.update_layout(
-        height=800,
+        height=700,
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -556,6 +554,9 @@ with tab_scenario:
             font=dict(size=9)
         )
     )
+    st.plotly_chart(fig4, use_container_width=True)
+    
+    
 
     fig5 = px.scatter(
         df,
@@ -669,6 +670,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
