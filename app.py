@@ -101,7 +101,7 @@ st.markdown(
 
       /* Push main content below fixed topbar + fixed tabs */
       .block-container{
-        padding-top: 7.2rem;
+        padding-top: 6.2rem;
       }
     </style>
 
@@ -747,6 +747,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
