@@ -447,6 +447,18 @@ for country in countries_selected:
     })
 
 df = pd.DataFrame(results)
+import pycountry
+
+def to_iso3(name):
+    try:
+        return pycountry.countries.lookup(name).alpha_3
+    except:
+        return None
+
+df["ISO3"] = df["Country"].apply(to_iso3)
+df = df.dropna(subset=["ISO3"])
+
+
 if df.empty:
     st.error("No countries produced results. This usually means country names don't match across datasets.")
     st.write("country_df countries:", len(country_df["country"].unique()))
@@ -494,8 +506,8 @@ with tab_map:
 
     fig_map = px.choropleth(
         df,
-        locations="Country",
-        locationmode="country names",
+        locations="ISO3",
+        #locationmode="country names",
         color="Total cost (€/t)",
         color_continuous_scale="Viridis",
         range_color=(df["Total cost (€/t)"].min(), df["Total cost (€/t)"].max()),
@@ -692,6 +704,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
