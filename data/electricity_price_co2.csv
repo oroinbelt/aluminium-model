@@ -1,4 +1,4 @@
-country,avg_electricity_price_eur_per_kwh,avg_electricity_price_2_eur_per_kwh,avg_co2_kg_per_kwh
+country,avg_electricity_price_2_eur_per_kwh,avg_electricity_price_eur_per_kwh,avg_co2_kg_per_kwh
 Australia,0.24444,0.091,0.72455
 Brazil,0.10248,0.10248,0.10025
 Canada,0.08988,0.085,0.14904
@@ -18,6 +18,7 @@ USA,0.13104,0.088,0.43808
 Sweden,0.23016,0.06145,0.02443
 Greece,0.1974,0.15408,0.40004
 Bahrain,0.06468,0.06468,0.64088
+
 
 
 
