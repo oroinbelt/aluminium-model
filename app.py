@@ -654,13 +654,13 @@ with tab_scenario:
             y=1.0,
             xanchor="left",
             x=1.02,
-            font=dict(size=9)
+            font=dict(size=7)
         )
     )
     st.plotly_chart(fig6, use_container_width=True)
     ###########################################################################33
 
-    fig_total_emissions = px.scatter(
+    fig7 = px.scatter(
         df,
         x="Total Al (t)",
         y="Total CO₂ (t)",
@@ -668,12 +668,26 @@ with tab_scenario:
         title="Total CO₂ emissions vs total aluminium (by country)",
         color_discrete_sequence=PALETTE
     )
-    fig_total_emissions.update_traces(marker=dict(opacity=1.0))
-    st.plotly_chart(fig_total_emissions, use_container_width=True, key="total_co2_vs_total_al")
+    fig7.update_traces(
+        marker=dict(opacity=1.0,size=6),
+        selector=dict(mode="markers")
+    )
+    fig7.update_layout(
+        height=555,
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            y=1.0,
+            xanchor="left",
+            x=1.02,
+            font=dict(size=7)
+        )
+    )
+    st.plotly_chart(fig7, use_container_width=True, key="total_co2_vs_total_al")
 
 
     ######################################################################################
-    fig_intensity_vs_scale = px.scatter(
+    fig8 = px.scatter(
         df,
         x="Total Al (t)",
         y="Total CO₂ footprint  (tCO₂/t Al)",
@@ -681,8 +695,22 @@ with tab_scenario:
         title="CO₂ intensity vs total aluminium (by country)",
         color_discrete_sequence=PALETTE
     )
-    fig_intensity_vs_scale.update_traces(marker=dict(opacity=1.0))
-    st.plotly_chart(fig_intensity_vs_scale, use_container_width=True, key="intensity_vs_total_al")
+    fig8.update_traces(
+        marker=dict(opacity=1.0,size=6),
+        selector=dict(mode="markers")
+    )
+    fig8.update_layout(
+        height=555,
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            y=1.0,
+            xanchor="left",
+            x=1.02,
+            font=dict(size=7)
+        )
+    )
+    st.plotly_chart(fig8, use_container_width=True, key="intensity_vs_total_al")
 
     ############################################################################
     st.markdown("### CO₂ footprint breakdown (per tonne of Al)")
@@ -747,6 +775,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
