@@ -514,7 +514,7 @@ with tab_scenario:
         selector=dict(mode="markers")
     )
     fig1.update_layout(
-        height=520,
+        height=530,
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -743,6 +743,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
