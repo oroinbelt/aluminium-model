@@ -518,7 +518,7 @@ with tab_scenario:
         selector=dict(mode="markers")
     )
     fig1.update_layout(
-        height=545,
+        height=555,
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -543,7 +543,7 @@ with tab_scenario:
         selector=dict(mode="markers")
     )
     fig2.update_layout(
-        height=540,
+        height=555,
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -568,7 +568,7 @@ with tab_scenario:
         selector=dict(mode="markers")
     )
     fig3.update_layout(
-        height=520,
+        height=555,
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -593,7 +593,7 @@ with tab_scenario:
         selector=dict(mode="markers")
     )
     fig4.update_layout(
-        height=520,
+        height=555,
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -621,7 +621,7 @@ with tab_scenario:
         selector=dict(mode="markers")
     )
     fig5.update_layout(
-        height=520,
+        height=555,
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -647,14 +647,14 @@ with tab_scenario:
         selector=dict(mode="markers")
     )
     fig6.update_layout(
-        height=520,
+        height=555,
         legend=dict(
             orientation="v",
             yanchor="top",
             y=1.0,
             xanchor="left",
             x=1.02,
-            font=dict(size=7)
+            font=dict(size=9)
         )
     )
     st.plotly_chart(fig6, use_container_width=True)
@@ -747,6 +747,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
