@@ -101,7 +101,7 @@ st.markdown(
 
       /* Push main content below fixed topbar + fixed tabs */
       .block-container{
-        padding-top: 5.7rem;
+        padding-top: 5.2rem;
       }
     </style>
 
@@ -518,7 +518,7 @@ with tab_scenario:
         selector=dict(mode="markers")
     )
     fig1.update_layout(
-        height=530,
+        height=545,
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -543,7 +543,7 @@ with tab_scenario:
         selector=dict(mode="markers")
     )
     fig2.update_layout(
-        height=520,
+        height=540,
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -747,6 +747,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
