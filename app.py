@@ -208,7 +208,15 @@ with st.sidebar:
 # =================================================
 # Countries — AUTOMATIC (ALL)
 # =================================================
-countries_selected = sorted(country_df["country"].unique())
+#countries_selected = sorted(country_df["country"].unique())
+# Countries present in ALL required datasets (prevents empty results)
+countries_selected = sorted(
+    set(country_df["country"])
+    & set(electricity_df["country"])
+    & set(alumina_df["country"])
+    & set(petcoke_df["country"])
+)
+
 
 ##################################################################################################
 def compute_total_co2_intensity_from_trade(
@@ -439,6 +447,16 @@ for country in countries_selected:
     })
 
 df = pd.DataFrame(results)
+if df.empty:
+    st.error("No countries produced results. This usually means country names don't match across datasets.")
+    st.write("country_df countries:", len(country_df["country"].unique()))
+    st.write("electricity_df countries:", len(electricity_df["country"].unique()))
+    st.write("alumina_df countries:", len(alumina_df["country"].unique()))
+    st.write("petcoke_df countries:", len(petcoke_df["country"].unique()))
+    st.write("Intersection countries:", len(countries_selected))
+    st.stop()
+
+
 df["Δ total cost (€/t)"] = df["Total cost (€/t, price mode 2)"] - df["Total cost (€/t)"]
 
 df["Total CO₂ (t)"] = df["Total CO₂ footprint  (tCO₂/t Al)"] * df["Total Al (t)"]
@@ -674,6 +692,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
