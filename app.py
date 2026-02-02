@@ -416,9 +416,9 @@ for country in countries_selected:
         "Total CO₂ footprint  (tCO₂/t Al)": total_co2,
 
         # Optional but useful breakdown column (electricity-only)
-        "Electricity CO₂  (tCO₂/t Al)": electricity_co2,
+        #"Electricity CO₂  (tCO₂/t Al)": electricity_co2,
 
-        "CO₂ elec (tCO₂/t Al)": elec_co2_int,
+        "Electricity CO₂  (tCO₂/t Al)": elec_co2_int,
         "CO₂ bauxite (tCO₂/t Al)": bauxite_co2_int,
         "CO₂ anode (tCO₂/t Al)": anode_co2_int,
         "CO₂ reaction (tCO₂/t Al)": reaction_co2_int,
@@ -775,6 +775,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
