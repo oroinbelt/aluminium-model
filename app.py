@@ -87,10 +87,10 @@ st.markdown(
       div[role="tablist"]::before{
         content: "";
         position: fixed;
-        top: 3.5rem;             /* starts right after the topbar mask */
+        top: 3.2rem;             /* starts right after the topbar mask */
         left: 0;
         right: 0;
-        height: 3.4rem;          /* covers the whole tabs region */
+        height: 3.1rem;          /* covers the whole tabs region */
         background: #0e1117;
         z-index: -1;
       }
@@ -743,6 +743,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
