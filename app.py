@@ -509,9 +509,13 @@ with tab_scenario:
         title="Electricity price vs Electricity CO₂ footprint (Grid)",
         color_discrete_sequence=PALETTE
     )
-    fig1.update_traces(marker=dict(opacity=1.0))
+    fig1.update_traces(
+        marker=dict(opacity=1.0),
+        marker=dict(size=8)
+        selector=dict(mode="markers")
+    )
     fig1.update_layout(
-        height=500,
+        height=520,
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -533,7 +537,7 @@ with tab_scenario:
     )
     fig2.update_traces(marker=dict(opacity=1.0))
     fig2.update_layout(
-        height=620,
+        height=520,
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -555,7 +559,7 @@ with tab_scenario:
     )
     fig3.update_traces(marker=dict(opacity=1.0))
     fig3.update_layout(
-        height=620,
+        height=520,
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -577,7 +581,7 @@ with tab_scenario:
     )
     fig4.update_traces(marker=dict(opacity=1.0))
     fig4.update_layout(
-        height=620,
+        height=520,
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -602,7 +606,7 @@ with tab_scenario:
     )
     fig5.update_traces(marker=dict(opacity=1.0))
     fig5.update_layout(
-        height=620,
+        height=520,
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -625,7 +629,7 @@ with tab_scenario:
     )
     fig6.update_traces(marker=dict(opacity=1.0))
     fig6.update_layout(
-        height=620,
+        height=520,
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -725,6 +729,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
