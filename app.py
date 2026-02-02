@@ -518,7 +518,7 @@ with tab_scenario:
         legend=dict(
             orientation="v",
             yanchor="top",
-            y=1.0,
+            y=1.13,
             xanchor="left",
             x=1.02,
             font=dict(size=8)
@@ -743,6 +743,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
