@@ -511,7 +511,7 @@ with tab_scenario:
     )
     fig1.update_traces(
         marker=dict(opacity=1.0),
-        marker=dict(size=8)
+        marker=dict(size=8),
         selector=dict(mode="markers")
     )
     fig1.update_layout(
@@ -729,6 +729,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
