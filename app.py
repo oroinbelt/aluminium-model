@@ -534,7 +534,10 @@ with tab_scenario:
         title="Total production cost vs electricity price",
         color_discrete_sequence=PALETTE
     )
-    fig2.update_traces(marker=dict(opacity=1.0))
+    fig2.update_traces(
+        marker=dict(opacity=1.0,size=7),
+        selector=dict(mode="markers")
+    )
     fig2.update_layout(
         height=520,
         legend=dict(
@@ -556,7 +559,10 @@ with tab_scenario:
         title="Total production cost vs TOTAL CO₂ footprint",
         color_discrete_sequence=PALETTE
     )
-    fig3.update_traces(marker=dict(opacity=1.0))
+    fig3.update_traces(
+        marker=dict(opacity=1.0,size=9),
+        selector=dict(mode="markers")
+    )
     fig3.update_layout(
         height=520,
         legend=dict(
@@ -578,7 +584,10 @@ with tab_scenario:
         title="Electricity cost vs electricity price",
         color_discrete_sequence=PALETTE
     )
-    fig4.update_traces(marker=dict(opacity=1.0))
+    fig4.update_traces(
+        marker=dict(opacity=1.0,size=6),
+        selector=dict(mode="markers")
+    )
     fig4.update_layout(
         height=520,
         legend=dict(
@@ -603,7 +612,10 @@ with tab_scenario:
         color_discrete_sequence=PALETTE
         
     )
-    fig5.update_traces(marker=dict(opacity=1.0))
+    fig5.update_traces(
+        marker=dict(opacity=1.0,size=7),
+        selector=dict(mode="markers")
+    )
     fig5.update_layout(
         height=520,
         legend=dict(
@@ -626,7 +638,10 @@ with tab_scenario:
         color_discrete_sequence=PALETTE
         
     )
-    fig6.update_traces(marker=dict(opacity=1.0))
+    fig6.update_traces(
+        marker=dict(opacity=1.0,size=6),
+        selector=dict(mode="markers")
+    )
     fig6.update_layout(
         height=520,
         legend=dict(
@@ -728,6 +743,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
