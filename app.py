@@ -180,7 +180,7 @@ with st.sidebar:
         "Al market price (€/t Al)",
         min_value=100.0,
         max_value=10000.0,
-        value=2653,
+        value=2653.0,
         step=50.0,
     )
 
@@ -731,6 +731,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
