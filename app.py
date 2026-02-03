@@ -176,6 +176,15 @@ with st.sidebar:
         step=5.0,
     )
 
+    subsidy_rate = st.number_input(
+        "Electricity Price Subsidy (%)",
+        min_value=0,
+        max_value=70,
+        value=0,
+        step=5,
+    ) / 100.0
+
+
     lme_price = st.number_input(
         "Al market price (€/t Al)",
         min_value=100.0,
@@ -344,7 +353,8 @@ for country in countries_selected:
     E = cdata["energy_kwh_per_t"]
     labour_cost = cdata["labour_cost_eur_per_t"]
 
-    electricity_price = edata["avg_electricity_price_eur_per_kwh"]
+    electricity_price_initial = edata["avg_electricity_price_eur_per_kwh"]
+    electricity_price = electricity_price_initial * (1 - subsidy_rate)
     grid_co2_intensity = edata["avg_co2_kg_per_kwh"]
 
     # Electricity cost and emissions (electricity-only breakdown)
@@ -731,6 +741,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
