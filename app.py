@@ -425,7 +425,7 @@ for country in countries_selected:
         "Material cost (€/t)": material_cost,
         "Carbon cost (€/t)": carbon_cost,
         "Total cost (€/t)": total_cost,
-        "Margin relative (%)": margin_relative,
+        "Margin (relative) (%)": margin_relative,
         "Margin (€/t)": margin_absolute,
         "Al market price (€/t)": lme_price,
 
@@ -741,6 +741,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
