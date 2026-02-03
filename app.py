@@ -176,13 +176,15 @@ with st.sidebar:
         step=5.0,
     )
 
-    margin_rate = st.number_input(
-        "Producer Margin (% of operational cost)",
-        min_value=0.0,
-        max_value=50.0,
-        value=15.0,
-        step=1.0,
-    ) / 100.0
+    lme_price = st.number_input(
+        "Al market price (€/t Al)",
+        min_value=100.0,
+        max_value=10000.0,
+        value=2653,
+        step=50.0,
+    )
+
+    
     current_efficiency = st.number_input(
         "Current Efficiency",
         min_value=0.20,
@@ -398,8 +400,11 @@ for country in countries_selected:
 
     # Total cost
     operational_cost = electricity_cost + labour_cost + material_cost
-    margin_cost = operational_cost * margin_rate
-    total_cost = operational_cost + margin_cost + carbon_cost
+    total_cost = operational_cost + carbon_cost
+    margin_relative = (lme_price - total_cost) / lme_price
+    margin_absolute = lme_price - total_cost
+
+
 
     results.append({
         "Country": country,
@@ -409,8 +414,11 @@ for country in countries_selected:
         "Labour cost (€/t)": labour_cost,
         "Material cost (€/t)": material_cost,
         "Carbon cost (€/t)": carbon_cost,
-        "Margin (€/t)": margin_cost,
         "Total cost (€/t)": total_cost,
+        "Margin relative (-)": margin_relative,
+        "Margin (€/t)": margin_absolute,
+        "Al market price (€/t)": lme_price,
+
 
         # Store TOTAL footprint (kg/t Al)
         "Total CO₂ footprint  (tCO₂/t Al)": total_co2,
@@ -707,7 +715,6 @@ with tab_costs:
         "Electricity cost (€/t)",
         "Labour cost (€/t)",
         "Material cost (€/t)",
-        "Margin (€/t)",
         "Carbon cost (€/t)",
     ]
 
@@ -724,6 +731,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
