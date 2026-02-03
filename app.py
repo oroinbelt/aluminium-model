@@ -423,7 +423,7 @@ for country in countries_selected:
         "Electricity cost (€/t)": electricity_cost,
         "Labour cost (€/t)": labour_cost,
         "Material cost (€/t)": material_cost,
-        "Carbon cost (€/t)": carbon_cost,
+        "Carbon Tax (€/t)": carbon_cost,
         "Total cost (€/t)": total_cost,
         "Margin (relative) (%)": margin_relative,
         "Margin (€/t)": margin_absolute,
@@ -557,7 +557,7 @@ with tab_scenario:
         color_discrete_sequence=PALETTE
     )
     fig2.update_traces(
-        marker=dict(opacity=1.0,size=7),
+        marker=dict(opacity=1.0,size=9),
         selector=dict(mode="markers")
     )
     fig2.update_layout(
@@ -610,7 +610,7 @@ with tab_scenario:
         
     )
     fig4.update_traces(
-        marker=dict(opacity=1.0,size=6),
+        marker=dict(opacity=1.0,size=7),
         selector=dict(mode="markers")
     )
     fig4.update_layout(
@@ -636,7 +636,7 @@ with tab_scenario:
         color_discrete_sequence=PALETTE
     )
     fig5.update_traces(
-        marker=dict(opacity=1.0,size=6),
+        marker=dict(opacity=1.0,size=7),
         selector=dict(mode="markers")
     )
     fig5.update_layout(
@@ -663,7 +663,7 @@ with tab_scenario:
         color_discrete_sequence=PALETTE
     )
     fig6.update_traces(
-        marker=dict(opacity=1.0,size=6),
+        marker=dict(opacity=1.0,size=7),
         selector=dict(mode="markers")
     )
     fig6.update_layout(
@@ -725,7 +725,7 @@ with tab_costs:
         "Electricity cost (€/t)",
         "Labour cost (€/t)",
         "Material cost (€/t)",
-        "Carbon cost (€/t)",
+        "Carbon Tax (€/t)",
     ]
 
     fig = go.Figure()
@@ -741,6 +741,7 @@ with tab_costs:
 
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df.round(2), use_container_width=True)
+
 
 
 
