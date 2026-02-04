@@ -351,7 +351,7 @@ for country in countries_selected:
 
     # Country-level parameters
     E = cdata["energy_kwh_per_t"]
-    labour_cost = cdata["labour_cost_eur_per_t"]
+    labour_cost = cdata["labour_cost_eur_per_t"] * 2.6
 
     electricity_price_initial = edata["avg_electricity_price_eur_per_kwh"]
     electricity_price = electricity_price_initial * (1 - subsidy_rate)
